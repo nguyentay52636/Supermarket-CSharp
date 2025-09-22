@@ -1,0 +1,1 @@
+run Project ; dotnet dev-certs https --trust
