@@ -1,48 +1,22 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Supermarket.Models
+namespace Supermarket.DTOs
 {
-    public class Product
+    public class ProductDto
     {
-        [Key]
-        public string MaSanPham { get; set; } = Guid.NewGuid().ToString();
-
-        [Required, MaxLength(200)]
+        public string MaSanPham { get; set; }
         public string TenSanPham { get; set; }
-
-        [MaxLength(50)]
         public string DonVi { get; set; }
-
         public int SoLuongTon { get; set; }
-
-        [Required]
         public string MaThuongHieu { get; set; }
-
-        [Required]
         public string MaDanhMuc { get; set; }
-
-        [Required]
         public string MaLoai { get; set; }
-
         public string MoTa { get; set; }
-
-        [Range(0, double.MaxValue)]
         public decimal GiaBan { get; set; }
-
         public string HinhAnh { get; set; }
-
         public string XuatXu { get; set; }
-
         public DateTime HSD { get; set; }
-
         public string TrangThai { get; set; }
-
         public string? CategoryName { get; set; }
         public string? BrandName { get; set; }
         public string? TypeName { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

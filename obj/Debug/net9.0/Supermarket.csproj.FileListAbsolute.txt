@@ -287,3 +287,16 @@
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/obj/Debug/net9.0/Supermarket.sourcelink.json
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/FluentValidation.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/FluentValidation.AspNetCore.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/FluentValidation.DependencyInjectionExtensions.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.AspNetCore.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Extensions.Logging.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Formatting.Compact.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Sinks.Console.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Sinks.File.dll
