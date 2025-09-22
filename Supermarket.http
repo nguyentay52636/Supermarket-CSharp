@@ -1,4 +1,4 @@
-@Supermarket_HostAddress = http://localhost:5295
+@Supermarket_HostAddress = http://localhost:5295/swagger
 
 GET {{Supermarket_HostAddress}}/weatherforecast/
 Accept: application/json

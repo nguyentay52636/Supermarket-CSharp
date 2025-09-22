@@ -286,3 +286,4 @@
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/obj/Debug/net9.0/Supermarket.sourcelink.json
