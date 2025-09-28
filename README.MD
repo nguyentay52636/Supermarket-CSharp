@@ -1,4 +1,36 @@
-# 🏪 Supermarket API
+# 🏪 Supermarket API - Backend System
+
+## 📖 Mô tả dự án
+
+**Supermarket API** là hệ thống backend quản lý siêu thị được xây dựng bằng **.NET 9.0** và **ASP.NET Core Web API**. Hệ thống cung cấp các API endpoints để quản lý nhân viên, sản phẩm và các hoạt động kinh doanh của siêu thị.
+
+## 🛠️ Công nghệ sử dụng
+
+### **Core Framework**
+- **.NET 9.0** - Framework chính
+- **ASP.NET Core Web API** - RESTful API framework
+- **C# 12** - Ngôn ngữ lập trình
+
+### **Database & ORM**
+- **SQL Server** - Hệ quản trị cơ sở dữ liệu
+- **Entity Framework Core 9.0** - ORM framework
+- **Code First Migration** - Quản lý database schema
+
+### **Architecture Pattern**
+- **Repository Pattern** - Tách biệt data access logic
+- **Service Layer Pattern** - Business logic layer
+- **DTO Pattern** - Data Transfer Objects
+- **Dependency Injection** - IoC container
+
+### **API Documentation**
+- **Swagger/OpenAPI** - API documentation
+- **XML Comments** - Code documentation
+- **ApiResponse Wrapper** - Standardized response format
+
+### **Development Tools**
+- **Entity Framework CLI** - Database migrations
+- **SQL Server Management Studio** - Database management
+- **Postman/curl** - API testing
 
 ## 🚀 Quick Start
 
@@ -17,66 +49,28 @@ dotnet run
 - SQL Server (localhost:1433)
 - Database: `supermarket`
 
-## 🔧 Configuration
 
-### Database Connection
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost,1433;Initial Catalog=supermarket;User ID=sa;Password=Tay52636@;TrustServerCertificate=True;Connection Timeout=30;"
-  }
-}
-```
+## 🚀 Deployment
 
-### Launch Settings
+### **Development Environment**
 - **URL:** `http://localhost:5295`
-- **Swagger:** `http://localhost:5295/swagger`
+- **Database:** SQL Server (localhost:1433)
 - **Environment:** Development
 
-## 📡 API Endpoints
+### **Production Considerations**
+- **HTTPS Configuration** - SSL/TLS certificates
+- **Database Security** - Connection string encryption
+- **API Rate Limiting** - Prevent abuse
+- **Logging & Monitoring** - Application insights
+- **Health Checks** - System monitoring
 
-### Test Endpoints
-- `GET /api/WeatherForecast` - Test endpoint
-- `GET /api/WeatherForecast/test-db` - Database connection test
+## 👥 Team & Contact
 
-### Business Endpoints
-- `GET /api/Product` - Product management
-- `GET /api/NhanVien` - Employee management
+**Developer:** [Your Name]  
+**Framework:** .NET 9.0 + ASP.NET Core  
+**Database:** SQL Server  
+**Documentation:** Swagger/OpenAPI  
 
-## 🛠️ Troubleshooting
+---
 
-### Port 5295 already in use
-```bash
-# Kill processes using port 5295
-lsof -ti:5295 | xargs -r kill -9
-
-# Or use the run script
-./run.sh
-```
-
-### Database connection issues
-1. Check SQL Server is running on localhost:1433
-2. Verify database `supermarket` exists
-3. Check credentials: sa/Tay52636@
-
-## 📁 Project Structure
-```
-Supermarket/
-├── Controllers/          # API Controllers
-├── Models/              # Data Models
-├── DTOs/                # Data Transfer Objects
-├── Services/            # Business Logic
-├── Repositories/        # Data Access
-├── Data/               # Database Context
-├── Extensions/         # Custom Extensions
-└── run.sh             # Run Script
-```
-
-## 🔄 Database Migrations
-```bash
-# Add migration
-dotnet ef migrations add MigrationName
-
-# Update database
-dotnet ef database update
-```
+*Dự án được phát triển với .NET 9.0 và ASP.NET Core Web API cho hệ thống quản lý siêu thị.*
