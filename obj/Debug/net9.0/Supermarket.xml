@@ -49,13 +49,22 @@
             <response code="404">Không tìm thấy nhân viên</response>
             <response code="500">Lỗi server</response>
         </member>
+        <member name="M:Supermarket.Controllers.NhanVienController.SearchNhanVien(System.String)">
+            <summary>
+            Tìm kiếm nhân viên theo tên hoặc vai trò
+            </summary>
+            <param name="searchTerm">Từ khóa tìm kiếm</param>
+            <returns>Danh sách nhân viên tìm được</returns>
+            <response code="200">Tìm kiếm thành công</response>
+            <response code="500">Lỗi server</response>
+        </member>
         <member name="M:Supermarket.Controllers.NhanVienController.DeleteNhanVien(System.String)">
             <summary>
             Xóa nhân viên
             </summary>
             <param name="id">Mã nhân viên</param>
-            <returns>Không có nội dung trả về</returns>
-            <response code="204">Xóa thành công</response>
+            <returns>Kết quả xóa nhân viên</returns>
+            <response code="200">Xóa thành công</response>
             <response code="404">Không tìm thấy nhân viên</response>
             <response code="500">Lỗi server</response>
         </member>
@@ -192,6 +201,27 @@
         </member>
         <member name="M:Supermarket.Migrations.FixDecimalPrecision.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
+        </member>
+        <member name="T:Supermarket.Models.Response.ApiResponse`1">
+            <summary>
+            Generic API Response wrapper
+            </summary>
+            <typeparam name="T">Type of data</typeparam>
+        </member>
+        <member name="P:Supermarket.Models.Response.ApiResponse`1.Success">
+            <summary>
+            Indicates if the operation was successful
+            </summary>
+        </member>
+        <member name="P:Supermarket.Models.Response.ApiResponse`1.Message">
+            <summary>
+            Response message
+            </summary>
+        </member>
+        <member name="P:Supermarket.Models.Response.ApiResponse`1.Data">
+            <summary>
+            Response data
+            </summary>
         </member>
     </members>
 </doc>

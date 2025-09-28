@@ -1,3 +1,4 @@
+/*
 using Supermarket.Models;
 using Supermarket.Repositories;
 
@@ -19,3 +20,4 @@ namespace Supermarket.Services
         public Task<bool> DeleteAsync(string id) => _repository.DeleteAsync(id);
     }
 }
+*/
