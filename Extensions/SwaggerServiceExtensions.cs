@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace SupermarketAPI.Extensions
 {
@@ -14,8 +15,25 @@ namespace SupermarketAPI.Extensions
                 {
                     Title = "Supermarket API",
                     Version = "v1",
-                    Description = "API cho hệ thống siêu thị"
+                    Description = "API cho hệ thống siêu thị - Quản lý sản phẩm và nhân viên",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Supermarket Team",
+                        Email = "support@supermarket.com"
+                    }
                 });
+
+                // Thêm XML comments để hiển thị documentation chi tiết
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                if (File.Exists(xmlPath))
+                {
+                    c.IncludeXmlComments(xmlPath);
+                }
+
+                // Cấu hình để hiển thị các tag groups
+                c.TagActionsBy(api => new[] { api.GroupName ?? api.ActionDescriptor.RouteValues["controller"] });
+                c.DocInclusionPredicate((name, api) => true);
             });
 
             return services;

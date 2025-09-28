@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Supermarket</name>
+    </assembly>
+    <members>
+        <member name="T:Supermarket.Controllers.NhanVienController">
+            <summary>
+            API quản lý nhân viên
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.NhanVienController.GetAllNhanVien">
+            <summary>
+            Lấy danh sách tất cả nhân viên
+            </summary>
+            <returns>Danh sách nhân viên</returns>
+            <response code="200">Trả về danh sách nhân viên thành công</response>
+            <response code="500">Lỗi server</response>
+        </member>
+        <member name="M:Supermarket.Controllers.NhanVienController.GetNhanVienById(System.String)">
+            <summary>
+            Lấy thông tin nhân viên theo mã
+            </summary>
+            <param name="id">Mã nhân viên</param>
+            <returns>Thông tin nhân viên</returns>
+            <response code="200">Trả về thông tin nhân viên thành công</response>
+            <response code="404">Không tìm thấy nhân viên</response>
+            <response code="500">Lỗi server</response>
+        </member>
+        <member name="M:Supermarket.Controllers.NhanVienController.CreateNhanVien(Supermarket.DTOs.CreateNhanVienDto)">
+            <summary>
+            Tạo nhân viên mới
+            </summary>
+            <param name="createDto">Thông tin nhân viên mới</param>
+            <returns>Thông tin nhân viên đã tạo</returns>
+            <response code="201">Tạo nhân viên thành công</response>
+            <response code="400">Dữ liệu đầu vào không hợp lệ</response>
+            <response code="500">Lỗi server</response>
+        </member>
+        <member name="M:Supermarket.Controllers.NhanVienController.UpdateNhanVien(System.String,Supermarket.DTOs.UpdateNhanVienDto)">
+            <summary>
+            Cập nhật thông tin nhân viên
+            </summary>
+            <param name="id">Mã nhân viên</param>
+            <param name="updateDto">Thông tin cập nhật</param>
+            <returns>Thông tin nhân viên đã cập nhật</returns>
+            <response code="200">Cập nhật thành công</response>
+            <response code="400">Dữ liệu đầu vào không hợp lệ</response>
+            <response code="404">Không tìm thấy nhân viên</response>
+            <response code="500">Lỗi server</response>
+        </member>
+        <member name="M:Supermarket.Controllers.NhanVienController.DeleteNhanVien(System.String)">
+            <summary>
+            Xóa nhân viên
+            </summary>
+            <param name="id">Mã nhân viên</param>
+            <returns>Không có nội dung trả về</returns>
+            <response code="204">Xóa thành công</response>
+            <response code="404">Không tìm thấy nhân viên</response>
+            <response code="500">Lỗi server</response>
+        </member>
+        <member name="T:Supermarket.DTOs.NhanVienDto">
+            <summary>
+            DTO cho thông tin nhân viên
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.MaNhanVien">
+            <summary>
+            Mã nhân viên (GUID)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.TenNhanVien">
+            <summary>
+            Tên nhân viên
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.GioiTinh">
+            <summary>
+            Giới tính
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.NgaySinh">
+            <summary>
+            Ngày sinh (định dạng string)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.SoDienThoai">
+            <summary>
+            Số điện thoại
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.VaiTro">
+            <summary>
+            Vai trò của nhân viên
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.CreatedAt">
+            <summary>
+            Thời gian tạo
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.UpdatedAt">
+            <summary>
+            Thời gian cập nhật cuối
+            </summary>
+        </member>
+        <member name="T:Supermarket.DTOs.CreateNhanVienDto">
+            <summary>
+            DTO cho việc tạo nhân viên mới
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.TenNhanVien">
+            <summary>
+            Tên nhân viên (bắt buộc, tối đa 200 ký tự)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.GioiTinh">
+            <summary>
+            Giới tính (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.NgaySinh">
+            <summary>
+            Ngày sinh (bắt buộc, định dạng string)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.SoDienThoai">
+            <summary>
+            Số điện thoại (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.VaiTro">
+            <summary>
+            Vai trò của nhân viên (bắt buộc)
+            </summary>
+        </member>
+        <member name="T:Supermarket.DTOs.UpdateNhanVienDto">
+            <summary>
+            DTO cho việc cập nhật thông tin nhân viên
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.MaNhanVien">
+            <summary>
+            Mã nhân viên (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.TenNhanVien">
+            <summary>
+            Tên nhân viên (bắt buộc, tối đa 200 ký tự)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.GioiTinh">
+            <summary>
+            Giới tính (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.NgaySinh">
+            <summary>
+            Ngày sinh (bắt buộc, định dạng string)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.SoDienThoai">
+            <summary>
+            Số điện thoại (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.VaiTro">
+            <summary>
+            Vai trò của nhân viên (bắt buộc)
+            </summary>
+        </member>
+        <member name="T:Supermarket.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:Supermarket.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Supermarket.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Supermarket.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Supermarket.Migrations.FixDecimalPrecision">
+            <inheritdoc />
+        </member>
+        <member name="M:Supermarket.Migrations.FixDecimalPrecision.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Supermarket.Migrations.FixDecimalPrecision.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Supermarket.Migrations.FixDecimalPrecision.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

@@ -300,3 +300,5 @@
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Sinks.Console.dll
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
 /Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Serilog.Sinks.File.dll
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/bin/Debug/net9.0/Supermarket.xml
+/Users/m1lt43/Desktop/SGU-2025-2026/BE-NET/Supermarket/obj/Debug/net9.0/Supermarket.xml
