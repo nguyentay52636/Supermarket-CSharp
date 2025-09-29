@@ -6,14 +6,15 @@ namespace Supermarket.Repositories.TaiKhoanRepositories
     {
         // CRUD Operations
         Task<TaiKhoan?> GetTaiKhoanByIdAsync(int id);
-        Task<List<TaiKhoan>> GetAllTaiKhoansAsync();
         Task<TaiKhoan> CreateTaiKhoanAsync(TaiKhoan taiKhoan);
         Task<bool> UpdateTaiKhoanAsync(TaiKhoan taiKhoan);
         Task<bool> DeleteTaiKhoanAsync(int id);
 
+        // Basic list retrieval
+        Task<List<TaiKhoan>> GetAllTaiKhoansAsync();
+
         // Search and Filter
         Task<List<TaiKhoan>> SearchTaiKhoansAsync(string? tenNguoiDung, string? email, string? soDienThoai, int? maQuyen, string? trangThai);
-        Task<(List<TaiKhoan> Data, int TotalCount)> GetTaiKhoansPagedAsync(int page, int pageSize, string? tenNguoiDung, string? email, string? soDienThoai, int? maQuyen, string? trangThai, string sortBy, string sortDirection);
 
         // Validation
         Task<bool> CheckEmailExistsAsync(string email, int? excludeId = null);

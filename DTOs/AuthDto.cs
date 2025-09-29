@@ -34,7 +34,7 @@ namespace Supermarket.DTOs
         [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
-        public int? MaQuyen { get; set; } = 2; // Mặc định là khách hàng
+        public int? MaQuyen { get; set; } = 3; // Mặc định là khách hàng
     }
 
     public class LoginResponseDto

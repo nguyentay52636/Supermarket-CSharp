@@ -130,7 +130,7 @@ namespace Supermarket.Services
                     Email = request.Email,
                     SoDienThoai = request.SoDienThoai,
                     MatKhau = HashPassword(request.Password),
-                    MaQuyen = request.MaQuyen ?? 2, // Sử dụng MaQuyen từ request hoặc mặc định là khách hàng
+                    MaQuyen = request.MaQuyen ?? 3, // Sử dụng MaQuyen từ request hoặc mặc định là khách hàng
                     TrangThai = "Active"
                 };
 
@@ -158,7 +158,7 @@ namespace Supermarket.Services
                 return new RegisterResponseDto
                 {
                     Success = false,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
+                    Message = $"Lỗi hệ thống: {ex.Message}. Inner exception: {ex.InnerException?.Message}"
                 };
             }
         }

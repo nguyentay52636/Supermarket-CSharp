@@ -66,8 +66,9 @@ namespace Supermarket.Data
                 entity.ToTable("TaiKhoan");
 
                 entity.HasOne(t => t.MaQuyenNavigation)
-                    .WithMany()
+                    .WithMany(p => p.TaiKhoans)
                     .HasForeignKey(t => t.MaQuyen)
+                    .HasConstraintName("FK__TaiKhoan__MaQuye__6754599E")
                     .OnDelete(DeleteBehavior.Restrict);
             });
 

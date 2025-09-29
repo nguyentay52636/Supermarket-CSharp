@@ -4,6 +4,8 @@ using Supermarket.DTOs;
 using Supermarket.Models.Response;
 using Supermarket.Services;
 using System.Security.Claims;
+using System.Linq;
+using Supermarket.Extensions;
 
 namespace Supermarket.Controllers
 {
@@ -11,7 +13,7 @@ namespace Supermarket.Controllers
     [ApiController]
     [Route("api/[controller]")]
     // [Authorize]
-    [Tags("TaiKhoan ")]
+    [Tags("TaiKhoan")]
     public class TaiKhoanController : ControllerBase
     {
         private readonly ITaiKhoanService _taiKhoanManagementService;
@@ -23,31 +25,24 @@ namespace Supermarket.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<TaiKhoanListResponseDto>), 200)]
-        [ProducesResponseType(typeof(ApiResponse<TaiKhoanListResponseDto>), 400)]
-        public async Task<ActionResult<ApiResponse<TaiKhoanListResponseDto>>> GetAllTaiKhoans([FromQuery] TaiKhoanSearchDto searchDto)
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<TaiKhoanListDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 500)]
+        public async Task<ActionResult<ApiResponse<IEnumerable<TaiKhoanListDto>>>> GetAllTaiKhoans()
         {
             try
             {
-                var result = await _taiKhoanManagementService.GetAllTaiKhoansAsync(searchDto);
+                var taiKhoans = await _taiKhoanManagementService.GetAllTaiKhoansAsync();
+                var taiKhoanDtos = taiKhoans.Select(t => t.ToListDto());
 
-                return Ok(new ApiResponse<TaiKhoanListResponseDto>
-                {
-                    Success = true,
-                    Message = "Lấy danh sách tài khoản thành công",
-                    Data = result
-                });
+                return Ok(ApiResponse.Ok(taiKhoanDtos, "Lấy danh sách tài khoản thành công"));
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<TaiKhoanListResponseDto>
-                {
-                    Success = false,
-                    Message = $"Lỗi hệ thống: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
+
+
 
 
         [HttpGet("{id:int}")]

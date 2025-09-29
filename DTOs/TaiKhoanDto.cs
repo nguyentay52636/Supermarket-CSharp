@@ -35,7 +35,7 @@ namespace Supermarket.DTOs
         public string Password { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Mã quyền là bắt buộc")]
-        public int MaQuyen { get; set; } = 2; // Mặc định là khách hàng
+        public int MaQuyen { get; set; } = 3; // Mặc định là khách hàng
 
         public string TrangThai { get; set; } = "Active";
     }
@@ -86,16 +86,9 @@ namespace Supermarket.DTOs
         public string SortDirection { get; set; } = "asc";
     }
 
-    public class TaiKhoanListResponseDto
-    {
-        public List<TaiKhoanListDto> Data { get; set; } = new();
-        public int TotalCount { get; set; }
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-        public int TotalPages { get; set; }
-    }
+    // Dùng cho endpoint không phân trang: chỉ giữ bộ lọc cơ bản
 
-    // Common DTOs
+   
     public class UserInfoDto
     {
         public int MaTaiKhoan { get; set; }

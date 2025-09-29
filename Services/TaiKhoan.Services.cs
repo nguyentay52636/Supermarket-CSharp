@@ -9,18 +9,15 @@ namespace Supermarket.Services
 {
     public interface ITaiKhoanService
     {
-        // CRUD Operations
         Task<TaiKhoanDto?> GetTaiKhoanByIdAsync(int id);
-        Task<TaiKhoanListResponseDto> GetAllTaiKhoansAsync(TaiKhoanSearchDto searchDto);
         Task<TaiKhoanDto> CreateTaiKhoanAsync(CreateTaiKhoanDto createDto);
         Task<TaiKhoanDto?> UpdateTaiKhoanAsync(int id, UpdateTaiKhoanDto updateDto);
         Task<bool> DeleteTaiKhoanAsync(int id);
 
-        // Status Management
         Task<bool> UpdateTaiKhoanStatusAsync(int id, string status);
         Task<bool> ResetPasswordAsync(int id, ResetPasswordDto resetDto);
 
-
+        Task<IEnumerable<TaiKhoan>> GetAllTaiKhoansAsync();
 
     }
 
@@ -41,31 +38,7 @@ namespace Supermarket.Services
             return taiKhoan.ToDto();
         }
 
-        public async Task<TaiKhoanListResponseDto> GetAllTaiKhoansAsync(TaiKhoanSearchDto searchDto)
-        {
-            var (data, totalCount) = await _repository.GetTaiKhoansPagedAsync(
-                searchDto.Page,
-                searchDto.PageSize,
-                searchDto.TenNguoiDung,
-                searchDto.Email,
-                searchDto.SoDienThoai,
-                searchDto.MaQuyen,
-                searchDto.TrangThai,
-                searchDto.SortBy,
-                searchDto.SortDirection
-            );
 
-            var totalPages = (int)Math.Ceiling((double)totalCount / searchDto.PageSize);
-
-            return new TaiKhoanListResponseDto
-            {
-                Data = data.Select(t => t.ToListDto()).ToList(),
-                TotalCount = totalCount,
-                Page = searchDto.Page,
-                PageSize = searchDto.PageSize,
-                TotalPages = totalPages
-            };
-        }
 
         public async Task<TaiKhoanDto> CreateTaiKhoanAsync(CreateTaiKhoanDto createDto)
         {
@@ -140,6 +113,11 @@ namespace Supermarket.Services
             return await _repository.ResetPasswordAsync(id, hashedPassword);
         }
 
+        public async Task<IEnumerable<TaiKhoan>> GetAllTaiKhoansAsync()
+        {
+            var list = await _repository.GetAllTaiKhoansAsync();
+            return list;
+        }
 
 
         private string HashPassword(string password)
