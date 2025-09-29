@@ -1,9 +1,6 @@
-using Microsoft.IdentityModel.Tokens;
 using Supermarket.DTOs;
 using Supermarket.Models;
 using Supermarket.Repositories.AuthRepositories;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -24,12 +21,12 @@ namespace Supermarket.Services
     public class AuthService : IAuthService
     {
         private readonly IAuthRepositories _authRepository;
-        private readonly IConfiguration _configuration;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public AuthService(IAuthRepositories authRepository, IConfiguration configuration)
+        public AuthService(IAuthRepositories authRepository, IJwtTokenService jwtTokenService)
         {
             _authRepository = authRepository;
-            _configuration = configuration;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
@@ -70,7 +67,7 @@ namespace Supermarket.Services
                 }
 
                 // Tạo JWT token
-                var token = GenerateJwtToken(taiKhoan);
+                var token = _jwtTokenService.GenerateAccessToken(taiKhoan);
 
                 return new LoginResponseDto
                 {
@@ -260,11 +257,9 @@ namespace Supermarket.Services
                     };
                 }
 
-                // Tạo reset token (đơn giản - trong thực tế nên dùng JWT với thời hạn ngắn)
                 var resetToken = GenerateResetToken(taiKhoan);
 
-                // TODO: Gửi email với reset token
-                // Trong demo này, chúng ta sẽ trả về token để test
+
 
                 return new ForgotPasswordResponseDto
                 {
@@ -287,7 +282,6 @@ namespace Supermarket.Services
         {
             try
             {
-                // Validate reset token (đơn giản - trong thực tế nên verify JWT)
                 var userId = ValidateResetToken(request.ResetToken);
 
                 if (userId == null)
@@ -351,38 +345,6 @@ namespace Supermarket.Services
                 };
             }
         }
-
-        private string GenerateJwtToken(TaiKhoan taiKhoan)
-        {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey ?? ""));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, taiKhoan.MaTaiKhoan.ToString()),
-                new Claim(ClaimTypes.Name, taiKhoan.TenNguoiDung ?? ""),
-                new Claim(ClaimTypes.Email, taiKhoan.Email ?? ""),
-                new Claim(ClaimTypes.MobilePhone, taiKhoan.SoDienThoai ?? ""),
-                new Claim(ClaimTypes.Role, taiKhoan.MaQuyenNavigation?.TenQuyen ?? "Customer"),
-                new Claim("MaQuyen", taiKhoan.MaQuyen?.ToString() ?? "2")
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(24), // Token hết hạn sau 24 giờ
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
         private string HashPassword(string password)
         {
             using var sha256 = SHA256.Create();
@@ -398,7 +360,6 @@ namespace Supermarket.Services
 
         private string GenerateResetToken(TaiKhoan taiKhoan)
         {
-            // Tạo reset token đơn giản (trong thực tế nên dùng JWT với thời hạn ngắn)
             var tokenData = $"{taiKhoan.MaTaiKhoan}:{DateTime.UtcNow.AddHours(1):yyyyMMddHHmmss}";
             var tokenBytes = Encoding.UTF8.GetBytes(tokenData);
             return Convert.ToBase64String(tokenBytes);
@@ -426,5 +387,6 @@ namespace Supermarket.Services
                 return null;
             }
         }
+
     }
 }

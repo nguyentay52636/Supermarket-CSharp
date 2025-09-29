@@ -73,13 +73,11 @@ namespace Supermarket.Services
             var taiKhoan = await _repository.GetTaiKhoanByIdAsync(id);
             if (taiKhoan == null) return null;
 
-            // Kiểm tra email đã tồn tại (trừ tài khoản hiện tại)
             if (await _repository.CheckEmailExistsAsync(updateDto.Email, id))
             {
                 throw new InvalidOperationException("Email đã được sử dụng");
             }
 
-            // Kiểm tra số điện thoại đã tồn tại (trừ tài khoản hiện tại)
             if (await _repository.CheckPhoneExistsAsync(updateDto.SoDienThoai, id))
             {
                 throw new InvalidOperationException("Số điện thoại đã được sử dụng");

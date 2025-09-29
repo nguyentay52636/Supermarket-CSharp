@@ -18,6 +18,7 @@ namespace Supermarket.Services
             services.AddScoped<NhanVienService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITaiKhoanService, TaiKhoanService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
         }
 
         public static void RegisterAllServices(this IServiceCollection services)
