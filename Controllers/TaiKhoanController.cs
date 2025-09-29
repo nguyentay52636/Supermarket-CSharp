@@ -142,12 +142,7 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Cập nhật thông tin tài khoản
-        /// </summary>
-        /// <param name="id">ID tài khoản</param>
-        /// <param name="updateDto">Thông tin cập nhật</param>
-        /// <returns>Tài khoản đã cập nhật</returns>
+
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 400)]
@@ -248,12 +243,7 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Cập nhật trạng thái tài khoản
-        /// </summary>
-        /// <param name="id">ID tài khoản</param>
-        /// <param name="status">Trạng thái mới</param>
-        /// <returns>Kết quả cập nhật</returns>
+
         [HttpPatch("{id}/status")]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
@@ -291,12 +281,7 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Reset mật khẩu tài khoản
-        /// </summary>
-        /// <param name="id">ID tài khoản</param>
-        /// <param name="resetDto">Thông tin mật khẩu mới</param>
-        /// <returns>Kết quả reset</returns>
+
         [HttpPatch("{id}/reset-password")]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]

@@ -5,6 +5,7 @@ using Supermarket.Models;
 using Supermarket.Models.Response;
 using Supermarket.Services;
 using System.ComponentModel.DataAnnotations;
+using Supermarket.Extensions;
 
 namespace Supermarket.Controllers
 {
@@ -15,18 +16,6 @@ namespace Supermarket.Controllers
     public class NhanVienController : ControllerBase
     {
         private readonly NhanVienService _nhanVienService;
-        private static NhanVienDto ToDto(NhanVien nv) => new NhanVienDto
-        {
-            MaNhanVien = nv.MaNhanVien,
-            TenNhanVien = nv.TenNhanVien ?? string.Empty,
-            GioiTinh = nv.GioiTinh ?? string.Empty,
-            NgaySinh = nv.NgaySinh,
-            SoDienThoai = nv.SoDienThoai ?? string.Empty,
-            Email = nv.Email,
-            VaiTro = nv.vaiTro ?? string.Empty,
-            MaCuaHang = nv.MaCuaHang,
-            TrangThai = nv.TrangThai
-        };
 
         public NhanVienController(NhanVienService nhanVienService)
         {
@@ -40,23 +29,13 @@ namespace Supermarket.Controllers
             try
             {
                 var nhanViens = await _nhanVienService.GetAllAsync();
-                var nhanVienDtos = nhanViens.Select(ToDto);
+                var nhanVienDtos = nhanViens.ToDtos();
 
-                return Ok(new ApiResponse<IEnumerable<NhanVienDto>>
-                {
-                    Success = true,
-                    Message = "Lấy danh sách nhân viên thành công",
-                    Data = nhanVienDtos
-                });
+                return Ok(ApiResponse.Ok(nhanVienDtos, "Lấy danh sách nhân viên thành công"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi server: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
 
@@ -71,31 +50,16 @@ namespace Supermarket.Controllers
                 var nhanVien = await _nhanVienService.GetByIdAsync(id);
                 if (nhanVien == null)
                 {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Không tìm thấy nhân viên với mã: {id}",
-                        Data = null
-                    });
+                    return NotFound(ApiResponse.Fail<object>($"Không tìm thấy nhân viên với mã: {id}"));
                 }
 
-                var nhanVienDto = ToDto(nhanVien);
+                var nhanVienDto = nhanVien.ToDto();
 
-                return Ok(new ApiResponse<NhanVienDto>
-                {
-                    Success = true,
-                    Message = "Lấy thông tin nhân viên thành công",
-                    Data = nhanVienDto
-                });
+                return Ok(ApiResponse.Ok(nhanVienDto, "Lấy thông tin nhân viên thành công"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi server: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
 
@@ -107,16 +71,6 @@ namespace Supermarket.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "Dữ liệu đầu vào không hợp lệ",
-                        Data = ModelState
-                    });
-                }
-
                 var nhanVien = new NhanVien
                 {
                     TenNhanVien = createDto.TenNhanVien,
@@ -131,23 +85,13 @@ namespace Supermarket.Controllers
 
                 var createdNhanVien = await _nhanVienService.AddAsync(nhanVien);
 
-                var nhanVienDto = ToDto(createdNhanVien);
+                var nhanVienDto = createdNhanVien.ToDto();
 
-                return CreatedAtAction(nameof(GetNhanVienById), new { id = createdNhanVien.MaNhanVien }, new ApiResponse<NhanVienDto>
-                {
-                    Success = true,
-                    Message = "Tạo nhân viên thành công",
-                    Data = nhanVienDto
-                });
+                return CreatedAtAction(nameof(GetNhanVienById), new { id = createdNhanVien.MaNhanVien }, ApiResponse.Ok(nhanVienDto, "Tạo nhân viên thành công"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi server: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
 
@@ -160,35 +104,15 @@ namespace Supermarket.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "Dữ liệu đầu vào không hợp lệ",
-                        Data = ModelState
-                    });
-                }
-
                 if (id != updateDto.MaNhanVien)
                 {
-                    return BadRequest(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "Mã nhân viên trong URL không khớp với mã trong dữ liệu",
-                        Data = null
-                    });
+                    return BadRequest(ApiResponse.Fail<object>("Mã nhân viên trong URL không khớp với mã trong dữ liệu"));
                 }
 
                 var existingNhanVien = await _nhanVienService.GetByIdAsync(id);
                 if (existingNhanVien == null)
                 {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Không tìm thấy nhân viên với mã: {id}",
-                        Data = null
-                    });
+                    return NotFound(ApiResponse.Fail<object>($"Không tìm thấy nhân viên với mã: {id}"));
                 }
 
                 existingNhanVien.TenNhanVien = updateDto.TenNhanVien;
@@ -202,23 +126,13 @@ namespace Supermarket.Controllers
 
                 var updatedNhanVien = await _nhanVienService.UpdateAsync(existingNhanVien);
 
-                var nhanVienDto = ToDto(updatedNhanVien);
+                var nhanVienDto = updatedNhanVien.ToDto();
 
-                return Ok(new ApiResponse<NhanVienDto>
-                {
-                    Success = true,
-                    Message = "Cập nhật nhân viên thành công",
-                    Data = nhanVienDto
-                });
+                return Ok(ApiResponse.Ok(nhanVienDto, "Cập nhật nhân viên thành công"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi server: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
 
@@ -231,23 +145,13 @@ namespace Supermarket.Controllers
             try
             {
                 var nhanViens = await _nhanVienService.SearchAsync(searchTerm);
-                var nhanVienDtos = nhanViens.Select(ToDto);
+                var nhanVienDtos = nhanViens.ToDtos();
 
-                return Ok(new ApiResponse<IEnumerable<NhanVienDto>>
-                {
-                    Success = true,
-                    Message = $"Tìm thấy {nhanVienDtos.Count()} nhân viên",
-                    Data = nhanVienDtos
-                });
+                return Ok(ApiResponse.Ok(nhanVienDtos, $"Tìm thấy {nhanVienDtos.Count()} nhân viên"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi server: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
 
@@ -262,29 +166,14 @@ namespace Supermarket.Controllers
                 var result = await _nhanVienService.DeleteAsync(id);
                 if (!result)
                 {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Không tìm thấy nhân viên với mã: {id}",
-                        Data = null
-                    });
+                    return NotFound(ApiResponse.Fail<object>($"Không tìm thấy nhân viên với mã: {id}"));
                 }
 
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Xóa nhân viên thành công",
-                    Data = null
-                });
+                return Ok(ApiResponse.Ok<object>(default, "Xóa nhân viên thành công"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi server: {ex.Message}",
-                    Data = null
-                });
+                return StatusCode(500, ApiResponse.Fail<object>($"Lỗi server: {ex.Message}"));
             }
         }
     }

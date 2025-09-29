@@ -83,6 +83,125 @@ namespace Supermarket.Data
             {
                 entity.HasKey(e => e.MaNhanVien);
                 entity.ToTable("NhanVien");
+                entity.HasOne(n => n.MaCuaHangNavigation)
+                    .WithMany(c => c.NhanViens)
+                    .HasForeignKey(n => n.MaCuaHang)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Explicit primary keys for remaining entities (conventions won't detect Vietnamese names)
+            modelBuilder.Entity<ChiTietDonHang>(entity =>
+            {
+                entity.HasKey(e => e.MaChiTietDonHang);
+                entity.ToTable("ChiTietDonHang");
+            });
+
+            modelBuilder.Entity<ChiTietGioHang>(entity =>
+            {
+                entity.HasKey(e => e.MaChiTietGioHang);
+                entity.ToTable("ChiTietGioHang");
+            });
+
+            modelBuilder.Entity<ChiTietHoaDon>(entity =>
+            {
+                entity.HasKey(e => e.MaChiTietHoaDon);
+                entity.ToTable("ChiTietHoaDon");
+            });
+
+            modelBuilder.Entity<ChiTietPhieuNhap>(entity =>
+            {
+                entity.HasKey(e => e.MaChiTietPhieuNhap);
+                entity.ToTable("ChiTietPhieuNhap");
+            });
+
+            modelBuilder.Entity<CuaHang>(entity =>
+            {
+                entity.HasKey(e => e.MaCuaHang);
+                entity.ToTable("CuaHang");
+            });
+
+            modelBuilder.Entity<DonHang>(entity =>
+            {
+                entity.HasKey(e => e.MaDonHang);
+                entity.ToTable("DonHang");
+            });
+
+            modelBuilder.Entity<GioHang>(entity =>
+            {
+                entity.HasKey(e => e.MaGioHang);
+                entity.ToTable("GioHang");
+            });
+
+            modelBuilder.Entity<HoaDon>(entity =>
+            {
+                entity.HasKey(e => e.MaHoaDon);
+                entity.ToTable("HoaDon");
+            });
+
+            modelBuilder.Entity<KhuyenMai>(entity =>
+            {
+                entity.HasKey(e => e.MaKhuyenMai);
+                entity.ToTable("KhuyenMai");
+            });
+
+            modelBuilder.Entity<LichSuTichDiem>(entity =>
+            {
+                entity.HasKey(e => e.MaLichSuTichDiem);
+                entity.ToTable("LichSuTichDiem");
+            });
+
+            modelBuilder.Entity<LichSuTonKho>(entity =>
+            {
+                entity.HasKey(e => e.MaLichSuTonKho);
+                entity.ToTable("LichSuTonKho");
+            });
+
+            modelBuilder.Entity<Loai>(entity =>
+            {
+                entity.HasKey(e => e.MaLoai);
+                entity.ToTable("Loai");
+            });
+
+            modelBuilder.Entity<MaGiamGium>(entity =>
+            {
+                entity.HasKey(e => e.MaGiamGia);
+                entity.ToTable("MaGiamGia");
+            });
+
+            modelBuilder.Entity<NhaCungCap>(entity =>
+            {
+                entity.HasKey(e => e.MaNhaCungCap);
+                entity.ToTable("NhaCungCap");
+            });
+
+            modelBuilder.Entity<PhanQuyen>(entity =>
+            {
+                entity.HasKey(e => e.MaQuyen);
+                entity.ToTable("PhanQuyen");
+            });
+
+            modelBuilder.Entity<PhieuNhap>(entity =>
+            {
+                entity.HasKey(e => e.MaPhieuNhap);
+                entity.ToTable("PhieuNhap");
+            });
+
+            modelBuilder.Entity<SanPham>(entity =>
+            {
+                entity.HasKey(e => e.MaSanPham);
+                entity.ToTable("SanPham");
+            });
+
+            modelBuilder.Entity<ThuocTinhSanPham>(entity =>
+            {
+                entity.HasKey(e => e.MaThuocTinh);
+                entity.ToTable("ThuocTinhSanPham");
+            });
+
+            modelBuilder.Entity<ThuongHieu>(entity =>
+            {
+                entity.HasKey(e => e.MaThuongHieu);
+                entity.ToTable("ThuongHieu");
             });
         }
     }

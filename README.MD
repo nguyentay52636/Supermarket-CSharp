@@ -66,7 +66,7 @@ dotnet run
 
 ## 👥 Team & Contact
 
-**Developer:** [Your Name]  
+**Developer:** [TYT]  
 **Framework:** .NET 9.0 + ASP.NET Core  
 **Database:** SQL Server  
 **Documentation:** Swagger/OpenAPI  

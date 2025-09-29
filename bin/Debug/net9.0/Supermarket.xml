@@ -44,36 +44,12 @@
             <param name="createDto">Thông tin tài khoản mới</param>
             <returns>Tài khoản đã tạo</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.UpdateTaiKhoan(System.Int32,Supermarket.DTOs.UpdateTaiKhoanDto)">
-            <summary>
-            Cập nhật thông tin tài khoản
-            </summary>
-            <param name="id">ID tài khoản</param>
-            <param name="updateDto">Thông tin cập nhật</param>
-            <returns>Tài khoản đã cập nhật</returns>
-        </member>
         <member name="M:Supermarket.Controllers.TaiKhoanController.DeleteTaiKhoan(System.Int32)">
             <summary>
             Xóa tài khoản
             </summary>
             <param name="id">ID tài khoản</param>
             <returns>Kết quả xóa</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.UpdateTaiKhoanStatus(System.Int32,System.String)">
-            <summary>
-            Cập nhật trạng thái tài khoản
-            </summary>
-            <param name="id">ID tài khoản</param>
-            <param name="status">Trạng thái mới</param>
-            <returns>Kết quả cập nhật</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.ResetPassword(System.Int32,Supermarket.DTOs.ResetPasswordDto)">
-            <summary>
-            Reset mật khẩu tài khoản
-            </summary>
-            <param name="id">ID tài khoản</param>
-            <param name="resetDto">Thông tin mật khẩu mới</param>
-            <returns>Kết quả reset</returns>
         </member>
         <member name="M:Supermarket.Controllers.TaiKhoanController.CheckEmailExists(System.String,System.Nullable{System.Int32})">
             <summary>
@@ -90,142 +66,6 @@
             <param name="phone">Số điện thoại cần kiểm tra</param>
             <param name="excludeId">ID tài khoản loại trừ</param>
             <returns>Kết quả kiểm tra</returns>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.NgaySinh">
-            <summary>
-            Ngày sinh
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.SoDienThoai">
-            <summary>
-            Số điện thoại
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.VaiTro">
-            <summary>
-            Vai trò của nhân viên
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.MaCuaHang">
-            <summary>
-            Mã cửa hàng
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.TrangThai">
-            <summary>
-            Trạng thái
-            </summary>
-        </member>
-        <member name="T:Supermarket.DTOs.CreateNhanVienDto">
-            <summary>
-            DTO cho việc tạo nhân viên mới
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.TenNhanVien">
-            <summary>
-            Tên nhân viên (bắt buộc, tối đa 200 ký tự)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.GioiTinh">
-            <summary>
-            Giới tính (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.NgaySinh">
-            <summary>
-            Ngày sinh (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.SoDienThoai">
-            <summary>
-            Số điện thoại (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.VaiTro">
-            <summary>
-            Vai trò của nhân viên (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.CreateNhanVienDto.MaCuaHang">
-            <summary>
-            Mã cửa hàng
-            </summary>
-        </member>
-        <member name="T:Supermarket.DTOs.UpdateNhanVienDto">
-            <summary>
-            DTO cho việc cập nhật thông tin nhân viên
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.MaNhanVien">
-            <summary>
-            Mã nhân viên (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.TenNhanVien">
-            <summary>
-            Tên nhân viên (bắt buộc, tối đa 200 ký tự)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.GioiTinh">
-            <summary>
-            Giới tính (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.NgaySinh">
-            <summary>
-            Ngày sinh (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.SoDienThoai">
-            <summary>
-            Số điện thoại (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.VaiTro">
-            <summary>
-            Vai trò của nhân viên (bắt buộc)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.TrangThai">
-            <summary>
-            Trạng thái
-            </summary>
-        </member>
-        <member name="T:Supermarket.Models.Response.ApiResponse`1">
-            <summary>
-            Generic API Response wrapper
-            </summary>
-            <typeparam name="T">Type of data</typeparam>
-        </member>
-        <member name="P:Supermarket.Models.Response.ApiResponse`1.Success">
-            <summary>
-            Indicates if the operation was successful
-            </summary>
-        </member>
-        <member name="P:Supermarket.Models.Response.ApiResponse`1.Message">
-            <summary>
-            Response message
-            </summary>
-        </member>
-        <member name="P:Supermarket.Models.Response.ApiResponse`1.Data">
-            <summary>
-            Response data
-            </summary>
         </member>
     </members>
 </doc>
