@@ -14,6 +14,9 @@ namespace Supermarket.Repositories.AuthRepositories
         // Password management
         Task<bool> UpdatePasswordAsync(int userId, string hashedPassword);
 
+        // User creation
+        Task<TaiKhoan> CreateTaiKhoanAsync(TaiKhoan taiKhoan);
+
         // Token management (for future refresh token implementation)
         Task<string?> GetRefreshTokenAsync(int userId);
         Task<bool> SaveRefreshTokenAsync(int userId, string refreshToken);

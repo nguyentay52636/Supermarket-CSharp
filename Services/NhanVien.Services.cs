@@ -17,5 +17,6 @@ namespace Supermarket.Services
         public Task<NhanVien> AddAsync(NhanVien nhanVien) => _repository.AddAsync(nhanVien);
         public Task<NhanVien> UpdateAsync(NhanVien nhanVien) => _repository.UpdateAsync(nhanVien);
         public Task<bool> DeleteAsync(int id) => _repository.DeleteAsync(id);
+        public Task<IEnumerable<NhanVien>> SearchAsync(string searchTerm) => _repository.SearchAsync(searchTerm);
     }
 }

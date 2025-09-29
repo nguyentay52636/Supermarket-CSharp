@@ -7,9 +7,7 @@ using System.Security.Claims;
 
 namespace Supermarket.Controllers
 {
-    /// <summary>
-    /// Authentication Controller - Quản lý đăng nhập, đăng ký, xác thực
-    /// </summary>
+
     [ApiController]
     [Route("api/[controller]")]
     [Tags("Authentication")]
@@ -22,11 +20,7 @@ namespace Supermarket.Controllers
             _authService = authService;
         }
 
-        /// <summary>
-        /// Đăng nhập vào hệ thống
-        /// </summary>
-        /// <param name="request">Thông tin đăng nhập</param>
-        /// <returns>Token và thông tin người dùng</returns>
+
         [HttpPost("login")]
         [ProducesResponseType(typeof(ApiResponse<LoginResponseDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<LoginResponseDto>), 400)]
@@ -62,11 +56,7 @@ namespace Supermarket.Controllers
             });
         }
 
-        /// <summary>
-        /// Đăng ký tài khoản mới (mặc định là khách hàng)
-        /// </summary>
-        /// <param name="request">Thông tin đăng ký</param>
-        /// <returns>Thông tin tài khoản đã tạo</returns>
+
         [HttpPost("register")]
         [ProducesResponseType(typeof(ApiResponse<RegisterResponseDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<RegisterResponseDto>), 400)]
@@ -197,10 +187,6 @@ namespace Supermarket.Controllers
             });
         }
 
-        /// <summary>
-        /// Kiểm tra token có hợp lệ không
-        /// </summary>
-        /// <returns>Thông tin token</returns>
         [HttpGet("validate-token")]
         [Authorize]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
@@ -223,12 +209,6 @@ namespace Supermarket.Controllers
                 }
             });
         }
-
-        /// <summary>
-        /// Refresh token (chưa implement)
-        /// </summary>
-        /// <param name="request">Refresh token request</param>
-        /// <returns>Token mới</returns>
         [HttpPost("refresh-token")]
         [ProducesResponseType(typeof(ApiResponse<RefreshTokenResponseDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<RefreshTokenResponseDto>), 400)]
@@ -295,11 +275,6 @@ namespace Supermarket.Controllers
             });
         }
 
-        /// <summary>
-        /// Quên mật khẩu - Gửi reset token qua email
-        /// </summary>
-        /// <param name="request">Thông tin email</param>
-        /// <returns>Reset token</returns>
         [HttpPost("forgot-password")]
         [ProducesResponseType(typeof(ApiResponse<ForgotPasswordResponseDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<ForgotPasswordResponseDto>), 400)]

@@ -7,12 +7,10 @@ using System.Security.Claims;
 
 namespace Supermarket.Controllers
 {
-    /// <summary>
-    /// TaiKhoan Management Controller - Quản lý CRUD tài khoản
-    /// </summary>
+
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Tất cả API đều cần authentication
+    // [Authorize]
     [Tags("TaiKhoan Management")]
     public class TaiKhoanController : ControllerBase
     {
@@ -23,11 +21,7 @@ namespace Supermarket.Controllers
             _taiKhoanManagementService = taiKhoanManagementService;
         }
 
-        /// <summary>
-        /// Lấy danh sách tài khoản với phân trang và tìm kiếm
-        /// </summary>
-        /// <param name="searchDto">Thông tin tìm kiếm và phân trang</param>
-        /// <returns>Danh sách tài khoản</returns>
+
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanListResponseDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanListResponseDto>), 400)]

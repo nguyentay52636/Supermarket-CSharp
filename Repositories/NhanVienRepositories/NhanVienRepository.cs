@@ -19,7 +19,6 @@ namespace Supermarket.Repositories.NhanVienRepositories
         public async Task<NhanVien?> GetByIdAsync(int id) =>
             await _context.NhanViens
                 .Include(n => n.MaCuaHangNavigation)
-                .Include(n => n.MaNhanVienNavigation)
                 .FirstOrDefaultAsync(n => n.MaNhanVien == id);
 
         public async Task<NhanVien> AddAsync(NhanVien nhanVien)
@@ -50,6 +49,22 @@ namespace Supermarket.Repositories.NhanVienRepositories
             {
                 return false;
             }
+        }
+
+        public async Task<IEnumerable<NhanVien>> SearchAsync(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return await _context.NhanViens.ToListAsync();
+            }
+
+            var term = searchTerm.Trim();
+            return await _context.NhanViens
+                .Where(nv =>
+                    (nv.TenNhanVien ?? "").Contains(term) ||
+                    (nv.vaiTro ?? "").Contains(term) ||
+                    (nv.SoDienThoai ?? "").Contains(term))
+                .ToListAsync();
         }
     }
 }

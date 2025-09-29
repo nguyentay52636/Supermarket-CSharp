@@ -9,5 +9,6 @@ namespace Supermarket.Repositories.NhanVienRepositories
         Task<NhanVien> AddAsync(NhanVien nhanVien);
         Task<NhanVien> UpdateAsync(NhanVien nhanVien);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<NhanVien>> SearchAsync(string searchTerm);
     }
 }

@@ -4,25 +4,6 @@
         <name>Supermarket</name>
     </assembly>
     <members>
-        <member name="T:Supermarket.Controllers.AuthController">
-            <summary>
-            Authentication Controller - Quản lý đăng nhập, đăng ký, xác thực
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.AuthController.Login(Supermarket.DTOs.LoginRequestDto)">
-            <summary>
-            Đăng nhập vào hệ thống
-            </summary>
-            <param name="request">Thông tin đăng nhập</param>
-            <returns>Token và thông tin người dùng</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.AuthController.Register(Supermarket.DTOs.RegisterRequestDto)">
-            <summary>
-            Đăng ký tài khoản mới (mặc định là khách hàng)
-            </summary>
-            <param name="request">Thông tin đăng ký</param>
-            <returns>Thông tin tài khoản đã tạo</returns>
-        </member>
         <member name="M:Supermarket.Controllers.AuthController.ChangePassword(Supermarket.DTOs.ChangePasswordRequestDto)">
             <summary>
             Đổi mật khẩu
@@ -36,31 +17,11 @@
             </summary>
             <returns>Thông tin người dùng</returns>
         </member>
-        <member name="M:Supermarket.Controllers.AuthController.ValidateToken">
-            <summary>
-            Kiểm tra token có hợp lệ không
-            </summary>
-            <returns>Thông tin token</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.AuthController.RefreshToken(Supermarket.DTOs.RefreshTokenRequestDto)">
-            <summary>
-            Refresh token (chưa implement)
-            </summary>
-            <param name="request">Refresh token request</param>
-            <returns>Token mới</returns>
-        </member>
         <member name="M:Supermarket.Controllers.AuthController.Logout">
             <summary>
             Đăng xuất
             </summary>
             <returns>Kết quả đăng xuất</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.AuthController.ForgotPassword(Supermarket.DTOs.ForgotPasswordRequestDto)">
-            <summary>
-            Quên mật khẩu - Gửi reset token qua email
-            </summary>
-            <param name="request">Thông tin email</param>
-            <returns>Reset token</returns>
         </member>
         <member name="M:Supermarket.Controllers.AuthController.ResetPassword(Supermarket.DTOs.ResetPasswordRequestDto)">
             <summary>
@@ -68,64 +29,6 @@
             </summary>
             <param name="request">Thông tin reset password</param>
             <returns>Kết quả reset</returns>
-        </member>
-        <member name="T:Supermarket.Controllers.NhanVienController">
-            <summary>
-            API quản lý nhân viên
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.CreateNhanVien(Supermarket.DTOs.CreateNhanVienDto)">
-            <summary>
-            Tạo nhân viên mới
-            </summary>
-            <param name="createDto">Thông tin nhân viên mới</param>
-            <returns>Thông tin nhân viên đã tạo</returns>
-            <response code="201">Tạo nhân viên thành công</response>
-            <response code="400">Dữ liệu đầu vào không hợp lệ</response>
-            <response code="500">Lỗi server</response>
-        </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.UpdateNhanVien(System.Int32,Supermarket.DTOs.UpdateNhanVienDto)">
-            <summary>
-            Cập nhật thông tin nhân viên
-            </summary>
-            <param name="id">Mã nhân viên</param>
-            <param name="updateDto">Thông tin cập nhật</param>
-            <returns>Thông tin nhân viên đã cập nhật</returns>
-            <response code="200">Cập nhật thành công</response>
-            <response code="400">Dữ liệu đầu vào không hợp lệ</response>
-            <response code="404">Không tìm thấy nhân viên</response>
-            <response code="500">Lỗi server</response>
-        </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.SearchNhanVien(System.String)">
-            <summary>
-            Tìm kiếm nhân viên theo tên hoặc vai trò
-            </summary>
-            <param name="searchTerm">Từ khóa tìm kiếm</param>
-            <returns>Danh sách nhân viên tìm được</returns>
-            <response code="200">Tìm kiếm thành công</response>
-            <response code="500">Lỗi server</response>
-        </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.DeleteNhanVien(System.Int32)">
-            <summary>
-            Xóa nhân viên
-            </summary>
-            <param name="id">Mã nhân viên</param>
-            <returns>Kết quả xóa nhân viên</returns>
-            <response code="200">Xóa thành công</response>
-            <response code="404">Không tìm thấy nhân viên</response>
-            <response code="500">Lỗi server</response>
-        </member>
-        <member name="T:Supermarket.Controllers.TaiKhoanController">
-            <summary>
-            TaiKhoan Management Controller - Quản lý CRUD tài khoản
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.GetAllTaiKhoans(Supermarket.DTOs.TaiKhoanSearchDto)">
-            <summary>
-            Lấy danh sách tài khoản với phân trang và tìm kiếm
-            </summary>
-            <param name="searchDto">Thông tin tìm kiếm và phân trang</param>
-            <returns>Danh sách tài khoản</returns>
         </member>
         <member name="M:Supermarket.Controllers.TaiKhoanController.GetTaiKhoanById(System.Int32)">
             <summary>
@@ -187,26 +90,6 @@
             <param name="phone">Số điện thoại cần kiểm tra</param>
             <param name="excludeId">ID tài khoản loại trừ</param>
             <returns>Kết quả kiểm tra</returns>
-        </member>
-        <member name="T:Supermarket.DTOs.NhanVienDto">
-            <summary>
-            DTO cho thông tin nhân viên
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.MaNhanVien">
-            <summary>
-            Mã nhân viên (int)
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.TenNhanVien">
-            <summary>
-            Tên nhân viên
-            </summary>
-        </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.GioiTinh">
-            <summary>
-            Giới tính
-            </summary>
         </member>
         <member name="P:Supermarket.DTOs.NhanVienDto.NgaySinh">
             <summary>
@@ -318,39 +201,10 @@
             Vai trò của nhân viên (bắt buộc)
             </summary>
         </member>
-        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.MaCuaHang">
-            <summary>
-            Mã cửa hàng
-            </summary>
-        </member>
         <member name="P:Supermarket.DTOs.UpdateNhanVienDto.TrangThai">
             <summary>
             Trạng thái
             </summary>
-        </member>
-        <member name="T:Supermarket.Migrations.InitialCreate">
-            <inheritdoc />
-        </member>
-        <member name="M:Supermarket.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Supermarket.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Supermarket.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:Supermarket.Migrations.FixDecimalPrecision">
-            <inheritdoc />
-        </member>
-        <member name="M:Supermarket.Migrations.FixDecimalPrecision.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Supermarket.Migrations.FixDecimalPrecision.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Supermarket.Migrations.FixDecimalPrecision.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
         </member>
         <member name="T:Supermarket.Models.Response.ApiResponse`1">
             <summary>

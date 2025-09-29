@@ -29,5 +29,4 @@ public partial class KhachHang
 
     public virtual ICollection<MaGiamGium> MaGiamGia { get; set; } = new List<MaGiamGium>();
 
-    public virtual TaiKhoan MaKhachHangNavigation { get; set; } = null!;
 }

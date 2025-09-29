@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Supermarket.DTOs
 {
-    // Auth DTOs - Tách riêng cho module Auth
     public class LoginRequestDto
     {
         [Required(ErrorMessage = "Email hoặc số điện thoại là bắt buộc")]

@@ -56,6 +56,13 @@ namespace Supermarket.Repositories.AuthRepositories
             return true;
         }
 
+        public async Task<TaiKhoan> CreateTaiKhoanAsync(TaiKhoan taiKhoan)
+        {
+            _context.TaiKhoans.Add(taiKhoan);
+            await _context.SaveChangesAsync();
+            return taiKhoan;
+        }
+
         // Token management methods (for future implementation)
         public async Task<string?> GetRefreshTokenAsync(int userId)
         {

@@ -130,13 +130,12 @@ namespace Supermarket.Services
                     Email = request.Email,
                     SoDienThoai = request.SoDienThoai,
                     MatKhau = HashPassword(request.Password),
-                    MaQuyen = 2, // Mặc định là khách hàng
+                    MaQuyen = request.MaQuyen ?? 2, // Sử dụng MaQuyen từ request hoặc mặc định là khách hàng
                     TrangThai = "Active"
                 };
 
-                // TODO: Implement CreateTaiKhoanAsync in AuthRepository
-                // For now, we'll use the existing TaiKhoanRepository
-                // This should be moved to AuthRepository later
+                // Lưu tài khoản vào database
+                var createdTaiKhoan = await _authRepository.CreateTaiKhoanAsync(taiKhoan);
 
                 return new RegisterResponseDto
                 {
@@ -144,12 +143,13 @@ namespace Supermarket.Services
                     Message = "Đăng ký thành công",
                     UserInfo = new UserInfoDto
                     {
-                        MaTaiKhoan = taiKhoan.MaTaiKhoan,
-                        TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
-                        Email = taiKhoan.Email ?? "",
-                        SoDienThoai = taiKhoan.SoDienThoai ?? "",
-                        MaQuyen = taiKhoan.MaQuyen,
-                        TrangThai = taiKhoan.TrangThai ?? ""
+                        MaTaiKhoan = createdTaiKhoan.MaTaiKhoan,
+                        TenNguoiDung = createdTaiKhoan.TenNguoiDung ?? "",
+                        Email = createdTaiKhoan.Email ?? "",
+                        SoDienThoai = createdTaiKhoan.SoDienThoai ?? "",
+                        MaQuyen = createdTaiKhoan.MaQuyen,
+                        TenQuyen = createdTaiKhoan.MaQuyenNavigation?.TenQuyen,
+                        TrangThai = createdTaiKhoan.TrangThai ?? ""
                     }
                 };
             }

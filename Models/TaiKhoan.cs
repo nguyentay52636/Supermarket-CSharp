@@ -19,9 +19,5 @@ public partial class TaiKhoan
 
     public string? TrangThai { get; set; }
 
-    public virtual KhachHang? KhachHang { get; set; }
-
     public virtual PhanQuyen? MaQuyenNavigation { get; set; }
-
-    public virtual NhanVien? NhanVien { get; set; }
 }
