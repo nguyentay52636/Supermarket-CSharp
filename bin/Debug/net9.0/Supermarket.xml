@@ -30,42 +30,5 @@
             <param name="request">Thông tin reset password</param>
             <returns>Kết quả reset</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.GetTaiKhoanById(System.Int32)">
-            <summary>
-            Lấy thông tin tài khoản theo ID
-            </summary>
-            <param name="id">ID tài khoản</param>
-            <returns>Thông tin tài khoản</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.CreateTaiKhoan(Supermarket.DTOs.CreateTaiKhoanDto)">
-            <summary>
-            Tạo tài khoản mới
-            </summary>
-            <param name="createDto">Thông tin tài khoản mới</param>
-            <returns>Tài khoản đã tạo</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.DeleteTaiKhoan(System.Int32)">
-            <summary>
-            Xóa tài khoản
-            </summary>
-            <param name="id">ID tài khoản</param>
-            <returns>Kết quả xóa</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.CheckEmailExists(System.String,System.Nullable{System.Int32})">
-            <summary>
-            Kiểm tra email đã tồn tại
-            </summary>
-            <param name="email">Email cần kiểm tra</param>
-            <param name="excludeId">ID tài khoản loại trừ</param>
-            <returns>Kết quả kiểm tra</returns>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.CheckPhoneExists(System.String,System.Nullable{System.Int32})">
-            <summary>
-            Kiểm tra số điện thoại đã tồn tại
-            </summary>
-            <param name="phone">Số điện thoại cần kiểm tra</param>
-            <param name="excludeId">ID tài khoản loại trừ</param>
-            <returns>Kết quả kiểm tra</returns>
-        </member>
     </members>
 </doc>

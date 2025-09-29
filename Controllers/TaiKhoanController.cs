@@ -11,7 +11,7 @@ namespace Supermarket.Controllers
     [ApiController]
     [Route("api/[controller]")]
     // [Authorize]
-    [Tags("TaiKhoan Management")]
+    [Tags("TaiKhoan ")]
     public class TaiKhoanController : ControllerBase
     {
         private readonly ITaiKhoanService _taiKhoanManagementService;
@@ -49,12 +49,8 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Lấy thông tin tài khoản theo ID
-        /// </summary>
-        /// <param name="id">ID tài khoản</param>
-        /// <returns>Thông tin tài khoản</returns>
-        [HttpGet("{id}")]
+
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 404)]
         public async Task<ActionResult<ApiResponse<TaiKhoanDto>>> GetTaiKhoanById(int id)
@@ -91,11 +87,7 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Tạo tài khoản mới
-        /// </summary>
-        /// <param name="createDto">Thông tin tài khoản mới</param>
-        /// <returns>Tài khoản đã tạo</returns>
+
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 201)]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 400)]
@@ -143,7 +135,7 @@ namespace Supermarket.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 400)]
         [ProducesResponseType(typeof(ApiResponse<TaiKhoanDto>), 404)]
@@ -200,12 +192,7 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Xóa tài khoản
-        /// </summary>
-        /// <param name="id">ID tài khoản</param>
-        /// <returns>Kết quả xóa</returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
         [ProducesResponseType(typeof(ApiResponse<object>), 404)]
@@ -244,7 +231,7 @@ namespace Supermarket.Controllers
         }
 
 
-        [HttpPatch("{id}/status")]
+        [HttpPatch("{id:int}/status")]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
         public async Task<ActionResult<ApiResponse<object>>> UpdateTaiKhoanStatus(int id, [FromBody] string status)
@@ -282,7 +269,7 @@ namespace Supermarket.Controllers
         }
 
 
-        [HttpPatch("{id}/reset-password")]
+        [HttpPatch("{id:int}/reset-password")]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
         public async Task<ActionResult<ApiResponse<object>>> ResetPassword(int id, [FromBody] ResetPasswordDto resetDto)
@@ -329,68 +316,8 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Kiểm tra email đã tồn tại
-        /// </summary>
-        /// <param name="email">Email cần kiểm tra</param>
-        /// <param name="excludeId">ID tài khoản loại trừ</param>
-        /// <returns>Kết quả kiểm tra</returns>
-        [HttpGet("check-email")]
-        [ProducesResponseType(typeof(ApiResponse<object>), 200)]
-        public async Task<ActionResult<ApiResponse<object>>> CheckEmailExists([FromQuery] string email, [FromQuery] int? excludeId = null)
-        {
-            try
-            {
-                var exists = await _taiKhoanManagementService.CheckEmailExistsAsync(email, excludeId);
 
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Kiểm tra email thành công",
-                    Data = new { Exists = exists }
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi hệ thống: {ex.Message}",
-                    Data = null
-                });
-            }
-        }
-
-        /// <summary>
-        /// Kiểm tra số điện thoại đã tồn tại
-        /// </summary>
-        /// <param name="phone">Số điện thoại cần kiểm tra</param>
-        /// <param name="excludeId">ID tài khoản loại trừ</param>
-        /// <returns>Kết quả kiểm tra</returns>
-        [HttpGet("check-phone")]
-        [ProducesResponseType(typeof(ApiResponse<object>), 200)]
-        public async Task<ActionResult<ApiResponse<object>>> CheckPhoneExists([FromQuery] string phone, [FromQuery] int? excludeId = null)
-        {
-            try
-            {
-                var exists = await _taiKhoanManagementService.CheckPhoneExistsAsync(phone, excludeId);
-
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Kiểm tra số điện thoại thành công",
-                    Data = new { Exists = exists }
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi hệ thống: {ex.Message}",
-                    Data = null
-                });
-            }
-        }
     }
+
+
 }

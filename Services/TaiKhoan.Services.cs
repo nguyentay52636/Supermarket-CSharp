@@ -1,6 +1,7 @@
 using Supermarket.DTOs;
 using Supermarket.Models;
 using Supermarket.Repositories.TaiKhoanRepositories;
+using Supermarket.Extensions;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -19,9 +20,8 @@ namespace Supermarket.Services
         Task<bool> UpdateTaiKhoanStatusAsync(int id, string status);
         Task<bool> ResetPasswordAsync(int id, ResetPasswordDto resetDto);
 
-        // Validation
-        Task<bool> CheckEmailExistsAsync(string email, int? excludeId = null);
-        Task<bool> CheckPhoneExistsAsync(string phone, int? excludeId = null);
+
+
     }
 
     public class TaiKhoanService : ITaiKhoanService
@@ -38,7 +38,7 @@ namespace Supermarket.Services
             var taiKhoan = await _repository.GetTaiKhoanByIdAsync(id);
             if (taiKhoan == null) return null;
 
-            return MapToDto(taiKhoan);
+            return taiKhoan.ToDto();
         }
 
         public async Task<TaiKhoanListResponseDto> GetAllTaiKhoansAsync(TaiKhoanSearchDto searchDto)
@@ -59,7 +59,7 @@ namespace Supermarket.Services
 
             return new TaiKhoanListResponseDto
             {
-                Data = data.Select(MapToListDto).ToList(),
+                Data = data.Select(t => t.ToListDto()).ToList(),
                 TotalCount = totalCount,
                 Page = searchDto.Page,
                 PageSize = searchDto.PageSize,
@@ -92,7 +92,7 @@ namespace Supermarket.Services
             };
 
             var createdTaiKhoan = await _repository.CreateTaiKhoanAsync(taiKhoan);
-            return MapToDto(createdTaiKhoan);
+            return createdTaiKhoan.ToDto();
         }
 
         public async Task<TaiKhoanDto?> UpdateTaiKhoanAsync(int id, UpdateTaiKhoanDto updateDto)
@@ -121,7 +121,7 @@ namespace Supermarket.Services
             var success = await _repository.UpdateTaiKhoanAsync(taiKhoan);
             if (!success) return null;
 
-            return MapToDto(taiKhoan);
+            return taiKhoan.ToDto();
         }
 
         public async Task<bool> DeleteTaiKhoanAsync(int id)
@@ -140,46 +140,7 @@ namespace Supermarket.Services
             return await _repository.ResetPasswordAsync(id, hashedPassword);
         }
 
-        public async Task<bool> CheckEmailExistsAsync(string email, int? excludeId = null)
-        {
-            return await _repository.CheckEmailExistsAsync(email, excludeId);
-        }
 
-        public async Task<bool> CheckPhoneExistsAsync(string phone, int? excludeId = null)
-        {
-            return await _repository.CheckPhoneExistsAsync(phone, excludeId);
-        }
-
-        private TaiKhoanDto MapToDto(TaiKhoan taiKhoan)
-        {
-            return new TaiKhoanDto
-            {
-                MaTaiKhoan = taiKhoan.MaTaiKhoan,
-                TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
-                Email = taiKhoan.Email ?? "",
-                SoDienThoai = taiKhoan.SoDienThoai ?? "",
-                MaQuyen = taiKhoan.MaQuyen,
-                TenQuyen = taiKhoan.MaQuyenNavigation?.TenQuyen,
-                TrangThai = taiKhoan.TrangThai ?? "",
-                NgayTao = DateTime.Now, // TODO: Add NgayTao field to TaiKhoan model
-                NgayCapNhat = DateTime.Now // TODO: Add NgayCapNhat field to TaiKhoan model
-            };
-        }
-
-        private TaiKhoanListDto MapToListDto(TaiKhoan taiKhoan)
-        {
-            return new TaiKhoanListDto
-            {
-                MaTaiKhoan = taiKhoan.MaTaiKhoan,
-                TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
-                Email = taiKhoan.Email ?? "",
-                SoDienThoai = taiKhoan.SoDienThoai ?? "",
-                MaQuyen = taiKhoan.MaQuyen,
-                TenQuyen = taiKhoan.MaQuyenNavigation?.TenQuyen,
-                TrangThai = taiKhoan.TrangThai ?? "",
-                NgayTao = DateTime.Now // TODO: Add NgayTao field to TaiKhoan model
-            };
-        }
 
         private string HashPassword(string password)
         {
