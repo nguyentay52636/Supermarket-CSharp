@@ -1,8 +1,9 @@
 using Supermarket.Extensions;
 using Supermarket.Data;
 using Microsoft.EntityFrameworkCore;
-using Supermarket.Repositories;
+
 using Supermarket.Services;
+using Supermarket.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,28 +12,16 @@ builder.Services.AddControllers();
 // Add Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Add Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Register repositories
-// builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<INhanVienRepository, NhanVienRepository>();
-
-// Register services
-// builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<NhanVienService>();
+builder.Services.ConfigureSwagger();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.RegisterAllServices();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.ConfigureSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

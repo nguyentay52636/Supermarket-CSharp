@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Supermarket.DTOs;
 using Supermarket.Models;
@@ -13,6 +14,7 @@ namespace Supermarket.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
+    [Authorize]
     public class NhanVienController : ControllerBase
     {
         private readonly NhanVienService _nhanVienService;
@@ -21,13 +23,6 @@ namespace Supermarket.Controllers
         {
             _nhanVienService = nhanVienService;
         }
-
-        /// <summary>
-        /// Lấy danh sách tất cả nhân viên
-        /// </summary>
-        /// <returns>Danh sách nhân viên</returns>
-        /// <response code="200">Trả về danh sách nhân viên thành công</response>
-        /// <response code="500">Lỗi server</response>
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<NhanVienDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
@@ -39,13 +34,14 @@ namespace Supermarket.Controllers
                 var nhanVienDtos = nhanViens.Select(nv => new NhanVienDto
                 {
                     MaNhanVien = nv.MaNhanVien,
-                    TenNhanVien = nv.TenNhanVien,
-                    GioiTinh = nv.GioiTinh,
+                    TenNhanVien = nv.TenNhanVien ?? "",
+                    GioiTinh = nv.GioiTinh ?? "",
                     NgaySinh = nv.NgaySinh,
-                    SoDienThoai = nv.SoDienThoai,
-                    VaiTro = nv.vaiTro,
-                    CreatedAt = nv.CreatedAt,
-                    UpdatedAt = nv.UpdatedAt
+                    SoDienThoai = nv.SoDienThoai ?? "",
+                    Email = nv.Email,
+                    VaiTro = nv.vaiTro ?? "",
+                    MaCuaHang = nv.MaCuaHang,
+                    TrangThai = nv.TrangThai
                 });
 
                 return Ok(new ApiResponse<IEnumerable<NhanVienDto>>
@@ -66,19 +62,11 @@ namespace Supermarket.Controllers
             }
         }
 
-        /// <summary>
-        /// Lấy thông tin nhân viên theo mã
-        /// </summary>
-        /// <param name="id">Mã nhân viên</param>
-        /// <returns>Thông tin nhân viên</returns>
-        /// <response code="200">Trả về thông tin nhân viên thành công</response>
-        /// <response code="404">Không tìm thấy nhân viên</response>
-        /// <response code="500">Lỗi server</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiResponse<NhanVienDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 404)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
-        public async Task<ActionResult<ApiResponse<NhanVienDto>>> GetNhanVienById(string id)
+        public async Task<ActionResult<ApiResponse<NhanVienDto>>> GetNhanVienById(int id)
         {
             try
             {
@@ -96,13 +84,14 @@ namespace Supermarket.Controllers
                 var nhanVienDto = new NhanVienDto
                 {
                     MaNhanVien = nhanVien.MaNhanVien,
-                    TenNhanVien = nhanVien.TenNhanVien,
-                    GioiTinh = nhanVien.GioiTinh,
+                    TenNhanVien = nhanVien.TenNhanVien ?? "",
+                    GioiTinh = nhanVien.GioiTinh ?? "",
                     NgaySinh = nhanVien.NgaySinh,
-                    SoDienThoai = nhanVien.SoDienThoai,
-                    VaiTro = nhanVien.vaiTro,
-                    CreatedAt = nhanVien.CreatedAt,
-                    UpdatedAt = nhanVien.UpdatedAt
+                    SoDienThoai = nhanVien.SoDienThoai ?? "",
+                    Email = nhanVien.Email,
+                    VaiTro = nhanVien.vaiTro ?? "",
+                    MaCuaHang = nhanVien.MaCuaHang,
+                    TrangThai = nhanVien.TrangThai
                 };
 
                 return Ok(new ApiResponse<NhanVienDto>
@@ -155,7 +144,9 @@ namespace Supermarket.Controllers
                     GioiTinh = createDto.GioiTinh,
                     NgaySinh = createDto.NgaySinh,
                     SoDienThoai = createDto.SoDienThoai,
+                    Email = createDto.Email,
                     vaiTro = createDto.VaiTro,
+                    MaCuaHang = createDto.MaCuaHang,
                     TrangThai = "Active"
                 };
 
@@ -164,13 +155,14 @@ namespace Supermarket.Controllers
                 var nhanVienDto = new NhanVienDto
                 {
                     MaNhanVien = createdNhanVien.MaNhanVien,
-                    TenNhanVien = createdNhanVien.TenNhanVien,
-                    GioiTinh = createdNhanVien.GioiTinh,
+                    TenNhanVien = createdNhanVien.TenNhanVien ?? "",
+                    GioiTinh = createdNhanVien.GioiTinh ?? "",
                     NgaySinh = createdNhanVien.NgaySinh,
-                    SoDienThoai = createdNhanVien.SoDienThoai,
-                    VaiTro = createdNhanVien.vaiTro,
-                    CreatedAt = createdNhanVien.CreatedAt,
-                    UpdatedAt = createdNhanVien.UpdatedAt
+                    SoDienThoai = createdNhanVien.SoDienThoai ?? "",
+                    Email = createdNhanVien.Email,
+                    VaiTro = createdNhanVien.vaiTro ?? "",
+                    MaCuaHang = createdNhanVien.MaCuaHang,
+                    TrangThai = createdNhanVien.TrangThai
                 };
 
                 return CreatedAtAction(nameof(GetNhanVienById), new { id = createdNhanVien.MaNhanVien }, new ApiResponse<NhanVienDto>
@@ -206,7 +198,7 @@ namespace Supermarket.Controllers
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
         [ProducesResponseType(typeof(ApiResponse<object>), 404)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
-        public async Task<ActionResult<ApiResponse<NhanVienDto>>> UpdateNhanVien(string id, [FromBody] UpdateNhanVienDto updateDto)
+        public async Task<ActionResult<ApiResponse<NhanVienDto>>> UpdateNhanVien(int id, [FromBody] UpdateNhanVienDto updateDto)
         {
             try
             {
@@ -245,20 +237,24 @@ namespace Supermarket.Controllers
                 existingNhanVien.GioiTinh = updateDto.GioiTinh;
                 existingNhanVien.NgaySinh = updateDto.NgaySinh;
                 existingNhanVien.SoDienThoai = updateDto.SoDienThoai;
+                existingNhanVien.Email = updateDto.Email;
                 existingNhanVien.vaiTro = updateDto.VaiTro;
+                existingNhanVien.MaCuaHang = updateDto.MaCuaHang;
+                existingNhanVien.TrangThai = updateDto.TrangThai;
 
                 var updatedNhanVien = await _nhanVienService.UpdateAsync(existingNhanVien);
 
                 var nhanVienDto = new NhanVienDto
                 {
                     MaNhanVien = updatedNhanVien.MaNhanVien,
-                    TenNhanVien = updatedNhanVien.TenNhanVien,
-                    GioiTinh = updatedNhanVien.GioiTinh,
+                    TenNhanVien = updatedNhanVien.TenNhanVien ?? "",
+                    GioiTinh = updatedNhanVien.GioiTinh ?? "",
                     NgaySinh = updatedNhanVien.NgaySinh,
-                    SoDienThoai = updatedNhanVien.SoDienThoai,
-                    VaiTro = updatedNhanVien.vaiTro,
-                    CreatedAt = updatedNhanVien.CreatedAt,
-                    UpdatedAt = updatedNhanVien.UpdatedAt
+                    SoDienThoai = updatedNhanVien.SoDienThoai ?? "",
+                    Email = updatedNhanVien.Email,
+                    VaiTro = updatedNhanVien.vaiTro ?? "",
+                    MaCuaHang = updatedNhanVien.MaCuaHang,
+                    TrangThai = updatedNhanVien.TrangThai
                 };
 
                 return Ok(new ApiResponse<NhanVienDto>
@@ -295,21 +291,22 @@ namespace Supermarket.Controllers
             {
                 var nhanViens = await _nhanVienService.GetAllAsync();
                 var filteredNhanViens = nhanViens.Where(nv =>
-                    nv.TenNhanVien.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    nv.vaiTro.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    nv.SoDienThoai.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                    (nv.TenNhanVien ?? "").Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    (nv.vaiTro ?? "").Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    (nv.SoDienThoai ?? "").Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
                 );
 
                 var nhanVienDtos = filteredNhanViens.Select(nv => new NhanVienDto
                 {
                     MaNhanVien = nv.MaNhanVien,
-                    TenNhanVien = nv.TenNhanVien,
-                    GioiTinh = nv.GioiTinh,
+                    TenNhanVien = nv.TenNhanVien ?? "",
+                    GioiTinh = nv.GioiTinh ?? "",
                     NgaySinh = nv.NgaySinh,
-                    SoDienThoai = nv.SoDienThoai,
-                    VaiTro = nv.vaiTro,
-                    CreatedAt = nv.CreatedAt,
-                    UpdatedAt = nv.UpdatedAt
+                    SoDienThoai = nv.SoDienThoai ?? "",
+                    Email = nv.Email,
+                    VaiTro = nv.vaiTro ?? "",
+                    MaCuaHang = nv.MaCuaHang,
+                    TrangThai = nv.TrangThai
                 });
 
                 return Ok(new ApiResponse<IEnumerable<NhanVienDto>>
@@ -342,7 +339,7 @@ namespace Supermarket.Controllers
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 404)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
-        public async Task<ActionResult<ApiResponse<object>>> DeleteNhanVien(string id)
+        public async Task<ActionResult<ApiResponse<object>>> DeleteNhanVien(int id)
         {
             try
             {

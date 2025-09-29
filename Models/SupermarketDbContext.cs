@@ -357,7 +357,7 @@ public partial class SupermarketDbContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.TenNhanVien).HasMaxLength(255);
             entity.Property(e => e.TrangThai).HasMaxLength(50);
-            entity.Property(e => e.VaiTro).HasMaxLength(50);
+            entity.Property(e => e.vaiTro).HasMaxLength(50);
 
             entity.HasOne(d => d.MaCuaHangNavigation).WithMany(p => p.NhanViens)
                 .HasForeignKey(d => d.MaCuaHang)

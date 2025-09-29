@@ -8,6 +8,9 @@ namespace Supermarket.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<NhanVien> NhanViens { get; set; }
+        public DbSet<TaiKhoan> TaiKhoans { get; set; }
+        public DbSet<PhanQuyen> PhanQuyens { get; set; }
+        public DbSet<KhachHang> KhachHangs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

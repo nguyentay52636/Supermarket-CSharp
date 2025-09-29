@@ -4,6 +4,71 @@
         <name>Supermarket</name>
     </assembly>
     <members>
+        <member name="T:Supermarket.Controllers.AuthController">
+            <summary>
+            Authentication Controller - Quản lý đăng nhập, đăng ký, xác thực
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.Login(Supermarket.DTOs.LoginRequestDto)">
+            <summary>
+            Đăng nhập vào hệ thống
+            </summary>
+            <param name="request">Thông tin đăng nhập</param>
+            <returns>Token và thông tin người dùng</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.Register(Supermarket.DTOs.RegisterRequestDto)">
+            <summary>
+            Đăng ký tài khoản mới (mặc định là khách hàng)
+            </summary>
+            <param name="request">Thông tin đăng ký</param>
+            <returns>Thông tin tài khoản đã tạo</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.ChangePassword(Supermarket.DTOs.ChangePasswordRequestDto)">
+            <summary>
+            Đổi mật khẩu
+            </summary>
+            <param name="request">Thông tin đổi mật khẩu</param>
+            <returns>Kết quả đổi mật khẩu</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.GetProfile">
+            <summary>
+            Lấy thông tin người dùng hiện tại
+            </summary>
+            <returns>Thông tin người dùng</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.ValidateToken">
+            <summary>
+            Kiểm tra token có hợp lệ không
+            </summary>
+            <returns>Thông tin token</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.RefreshToken(Supermarket.DTOs.RefreshTokenRequestDto)">
+            <summary>
+            Refresh token (chưa implement)
+            </summary>
+            <param name="request">Refresh token request</param>
+            <returns>Token mới</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.Logout">
+            <summary>
+            Đăng xuất
+            </summary>
+            <returns>Kết quả đăng xuất</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.ForgotPassword(Supermarket.DTOs.ForgotPasswordRequestDto)">
+            <summary>
+            Quên mật khẩu - Gửi reset token qua email
+            </summary>
+            <param name="request">Thông tin email</param>
+            <returns>Reset token</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.AuthController.ResetPassword(Supermarket.DTOs.ResetPasswordRequestDto)">
+            <summary>
+            Reset mật khẩu bằng reset token
+            </summary>
+            <param name="request">Thông tin reset password</param>
+            <returns>Kết quả reset</returns>
+        </member>
         <member name="T:Supermarket.Controllers.NhanVienController">
             <summary>
             API quản lý nhân viên
@@ -17,7 +82,7 @@
             <response code="200">Trả về danh sách nhân viên thành công</response>
             <response code="500">Lỗi server</response>
         </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.GetNhanVienById(System.String)">
+        <member name="M:Supermarket.Controllers.NhanVienController.GetNhanVienById(System.Int32)">
             <summary>
             Lấy thông tin nhân viên theo mã
             </summary>
@@ -37,7 +102,7 @@
             <response code="400">Dữ liệu đầu vào không hợp lệ</response>
             <response code="500">Lỗi server</response>
         </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.UpdateNhanVien(System.String,Supermarket.DTOs.UpdateNhanVienDto)">
+        <member name="M:Supermarket.Controllers.NhanVienController.UpdateNhanVien(System.Int32,Supermarket.DTOs.UpdateNhanVienDto)">
             <summary>
             Cập nhật thông tin nhân viên
             </summary>
@@ -58,7 +123,7 @@
             <response code="200">Tìm kiếm thành công</response>
             <response code="500">Lỗi server</response>
         </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.DeleteNhanVien(System.String)">
+        <member name="M:Supermarket.Controllers.NhanVienController.DeleteNhanVien(System.Int32)">
             <summary>
             Xóa nhân viên
             </summary>
@@ -68,6 +133,104 @@
             <response code="404">Không tìm thấy nhân viên</response>
             <response code="500">Lỗi server</response>
         </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanController.Login(Supermarket.DTOs.LoginRequestDto)">
+            <summary>
+            Đăng nhập
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanController.Register(Supermarket.DTOs.RegisterRequestDto)">
+            <summary>
+            Đăng ký tài khoản mới
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanController.ChangePassword(Supermarket.DTOs.ChangePasswordRequestDto)">
+            <summary>
+            Đổi mật khẩu
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanController.GetProfile">
+            <summary>
+            Lấy thông tin người dùng hiện tại
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanController.ValidateToken">
+            <summary>
+            Kiểm tra token có hợp lệ không
+            </summary>
+        </member>
+        <member name="T:Supermarket.Controllers.TaiKhoanManagementController">
+            <summary>
+            TaiKhoan Management Controller - Quản lý CRUD tài khoản
+            </summary>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.GetAllTaiKhoans(Supermarket.DTOs.TaiKhoanSearchDto)">
+            <summary>
+            Lấy danh sách tài khoản với phân trang và tìm kiếm
+            </summary>
+            <param name="searchDto">Thông tin tìm kiếm và phân trang</param>
+            <returns>Danh sách tài khoản</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.GetTaiKhoanById(System.Int32)">
+            <summary>
+            Lấy thông tin tài khoản theo ID
+            </summary>
+            <param name="id">ID tài khoản</param>
+            <returns>Thông tin tài khoản</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.CreateTaiKhoan(Supermarket.DTOs.CreateTaiKhoanDto)">
+            <summary>
+            Tạo tài khoản mới
+            </summary>
+            <param name="createDto">Thông tin tài khoản mới</param>
+            <returns>Tài khoản đã tạo</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.UpdateTaiKhoan(System.Int32,Supermarket.DTOs.UpdateTaiKhoanDto)">
+            <summary>
+            Cập nhật thông tin tài khoản
+            </summary>
+            <param name="id">ID tài khoản</param>
+            <param name="updateDto">Thông tin cập nhật</param>
+            <returns>Tài khoản đã cập nhật</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.DeleteTaiKhoan(System.Int32)">
+            <summary>
+            Xóa tài khoản
+            </summary>
+            <param name="id">ID tài khoản</param>
+            <returns>Kết quả xóa</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.UpdateTaiKhoanStatus(System.Int32,System.String)">
+            <summary>
+            Cập nhật trạng thái tài khoản
+            </summary>
+            <param name="id">ID tài khoản</param>
+            <param name="status">Trạng thái mới</param>
+            <returns>Kết quả cập nhật</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.ResetPassword(System.Int32,Supermarket.DTOs.ResetPasswordDto)">
+            <summary>
+            Reset mật khẩu tài khoản
+            </summary>
+            <param name="id">ID tài khoản</param>
+            <param name="resetDto">Thông tin mật khẩu mới</param>
+            <returns>Kết quả reset</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.CheckEmailExists(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Kiểm tra email đã tồn tại
+            </summary>
+            <param name="email">Email cần kiểm tra</param>
+            <param name="excludeId">ID tài khoản loại trừ</param>
+            <returns>Kết quả kiểm tra</returns>
+        </member>
+        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.CheckPhoneExists(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Kiểm tra số điện thoại đã tồn tại
+            </summary>
+            <param name="phone">Số điện thoại cần kiểm tra</param>
+            <param name="excludeId">ID tài khoản loại trừ</param>
+            <returns>Kết quả kiểm tra</returns>
+        </member>
         <member name="T:Supermarket.DTOs.NhanVienDto">
             <summary>
             DTO cho thông tin nhân viên
@@ -75,7 +238,7 @@
         </member>
         <member name="P:Supermarket.DTOs.NhanVienDto.MaNhanVien">
             <summary>
-            Mã nhân viên (GUID)
+            Mã nhân viên (int)
             </summary>
         </member>
         <member name="P:Supermarket.DTOs.NhanVienDto.TenNhanVien">
@@ -90,7 +253,7 @@
         </member>
         <member name="P:Supermarket.DTOs.NhanVienDto.NgaySinh">
             <summary>
-            Ngày sinh (định dạng string)
+            Ngày sinh
             </summary>
         </member>
         <member name="P:Supermarket.DTOs.NhanVienDto.SoDienThoai">
@@ -98,19 +261,24 @@
             Số điện thoại
             </summary>
         </member>
+        <member name="P:Supermarket.DTOs.NhanVienDto.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
         <member name="P:Supermarket.DTOs.NhanVienDto.VaiTro">
             <summary>
             Vai trò của nhân viên
             </summary>
         </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.CreatedAt">
+        <member name="P:Supermarket.DTOs.NhanVienDto.MaCuaHang">
             <summary>
-            Thời gian tạo
+            Mã cửa hàng
             </summary>
         </member>
-        <member name="P:Supermarket.DTOs.NhanVienDto.UpdatedAt">
+        <member name="P:Supermarket.DTOs.NhanVienDto.TrangThai">
             <summary>
-            Thời gian cập nhật cuối
+            Trạng thái
             </summary>
         </member>
         <member name="T:Supermarket.DTOs.CreateNhanVienDto">
@@ -130,7 +298,7 @@
         </member>
         <member name="P:Supermarket.DTOs.CreateNhanVienDto.NgaySinh">
             <summary>
-            Ngày sinh (bắt buộc, định dạng string)
+            Ngày sinh (bắt buộc)
             </summary>
         </member>
         <member name="P:Supermarket.DTOs.CreateNhanVienDto.SoDienThoai">
@@ -138,9 +306,19 @@
             Số điện thoại (bắt buộc)
             </summary>
         </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
         <member name="P:Supermarket.DTOs.CreateNhanVienDto.VaiTro">
             <summary>
             Vai trò của nhân viên (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.CreateNhanVienDto.MaCuaHang">
+            <summary>
+            Mã cửa hàng
             </summary>
         </member>
         <member name="T:Supermarket.DTOs.UpdateNhanVienDto">
@@ -165,7 +343,7 @@
         </member>
         <member name="P:Supermarket.DTOs.UpdateNhanVienDto.NgaySinh">
             <summary>
-            Ngày sinh (bắt buộc, định dạng string)
+            Ngày sinh (bắt buộc)
             </summary>
         </member>
         <member name="P:Supermarket.DTOs.UpdateNhanVienDto.SoDienThoai">
@@ -173,9 +351,24 @@
             Số điện thoại (bắt buộc)
             </summary>
         </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
         <member name="P:Supermarket.DTOs.UpdateNhanVienDto.VaiTro">
             <summary>
             Vai trò của nhân viên (bắt buộc)
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.MaCuaHang">
+            <summary>
+            Mã cửa hàng
+            </summary>
+        </member>
+        <member name="P:Supermarket.DTOs.UpdateNhanVienDto.TrangThai">
+            <summary>
+            Trạng thái
             </summary>
         </member>
         <member name="T:Supermarket.Migrations.InitialCreate">

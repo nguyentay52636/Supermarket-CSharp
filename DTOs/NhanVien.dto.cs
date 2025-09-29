@@ -8,9 +8,9 @@ namespace Supermarket.DTOs
     public class NhanVienDto
     {
         /// <summary>
-        /// Mã nhân viên (GUID)
+        /// Mã nhân viên (int)
         /// </summary>
-        public string MaNhanVien { get; set; } = string.Empty;
+        public int MaNhanVien { get; set; }
 
         /// <summary>
         /// Tên nhân viên
@@ -23,9 +23,9 @@ namespace Supermarket.DTOs
         public string GioiTinh { get; set; } = string.Empty;
 
         /// <summary>
-        /// Ngày sinh (định dạng string)
+        /// Ngày sinh
         /// </summary>
-        public string NgaySinh { get; set; } = string.Empty;
+        public DateOnly? NgaySinh { get; set; }
 
         /// <summary>
         /// Số điện thoại
@@ -33,19 +33,24 @@ namespace Supermarket.DTOs
         public string SoDienThoai { get; set; } = string.Empty;
 
         /// <summary>
+        /// Email
+        /// </summary>
+        public string? Email { get; set; }
+
+        /// <summary>
         /// Vai trò của nhân viên
         /// </summary>
         public string VaiTro { get; set; } = string.Empty;
 
         /// <summary>
-        /// Thời gian tạo
+        /// Mã cửa hàng
         /// </summary>
-        public DateTime CreatedAt { get; set; }
+        public int? MaCuaHang { get; set; }
 
         /// <summary>
-        /// Thời gian cập nhật cuối
+        /// Trạng thái
         /// </summary>
-        public DateTime UpdatedAt { get; set; }
+        public string? TrangThai { get; set; }
     }
 
     /// <summary>
@@ -67,10 +72,10 @@ namespace Supermarket.DTOs
         public string GioiTinh { get; set; } = string.Empty;
 
         /// <summary>
-        /// Ngày sinh (bắt buộc, định dạng string)
+        /// Ngày sinh (bắt buộc)
         /// </summary>
         [Required(ErrorMessage = "Ngày sinh là bắt buộc")]
-        public string NgaySinh { get; set; } = string.Empty;
+        public DateOnly NgaySinh { get; set; }
 
         /// <summary>
         /// Số điện thoại (bắt buộc)
@@ -79,10 +84,21 @@ namespace Supermarket.DTOs
         public string SoDienThoai { get; set; } = string.Empty;
 
         /// <summary>
+        /// Email
+        /// </summary>
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        public string? Email { get; set; }
+
+        /// <summary>
         /// Vai trò của nhân viên (bắt buộc)
         /// </summary>
         [Required(ErrorMessage = "Vai trò là bắt buộc")]
         public string VaiTro { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Mã cửa hàng
+        /// </summary>
+        public int? MaCuaHang { get; set; }
     }
 
     /// <summary>
@@ -94,7 +110,7 @@ namespace Supermarket.DTOs
         /// Mã nhân viên (bắt buộc)
         /// </summary>
         [Required(ErrorMessage = "Mã nhân viên là bắt buộc")]
-        public string MaNhanVien { get; set; } = string.Empty;
+        public int MaNhanVien { get; set; }
 
         /// <summary>
         /// Tên nhân viên (bắt buộc, tối đa 200 ký tự)
@@ -110,10 +126,10 @@ namespace Supermarket.DTOs
         public string GioiTinh { get; set; } = string.Empty;
 
         /// <summary>
-        /// Ngày sinh (bắt buộc, định dạng string)
+        /// Ngày sinh (bắt buộc)
         /// </summary>
         [Required(ErrorMessage = "Ngày sinh là bắt buộc")]
-        public string NgaySinh { get; set; } = string.Empty;
+        public DateOnly NgaySinh { get; set; }
 
         /// <summary>
         /// Số điện thoại (bắt buộc)
@@ -122,9 +138,25 @@ namespace Supermarket.DTOs
         public string SoDienThoai { get; set; } = string.Empty;
 
         /// <summary>
+        /// Email
+        /// </summary>
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        public string? Email { get; set; }
+
+        /// <summary>
         /// Vai trò của nhân viên (bắt buộc)
         /// </summary>
         [Required(ErrorMessage = "Vai trò là bắt buộc")]
         public string VaiTro { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Mã cửa hàng
+        /// </summary>
+        public int? MaCuaHang { get; set; }
+
+        /// <summary>
+        /// Trạng thái
+        /// </summary>
+        public string? TrangThai { get; set; }
     }
 }

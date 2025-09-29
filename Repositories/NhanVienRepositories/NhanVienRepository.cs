@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Supermarket.Data;
 using Supermarket.Models;
 
-namespace Supermarket.Repositories
+namespace Supermarket.Repositories.NhanVienRepositories
 {
     public class NhanVienRepository : INhanVienRepository
     {
@@ -16,8 +16,11 @@ namespace Supermarket.Repositories
         public async Task<IEnumerable<NhanVien>> GetAllAsync() =>
             await _context.NhanViens.ToListAsync();
 
-        public async Task<NhanVien?> GetByIdAsync(string id) =>
-            await _context.NhanViens.FindAsync(id);
+        public async Task<NhanVien?> GetByIdAsync(int id) =>
+            await _context.NhanViens
+                .Include(n => n.MaCuaHangNavigation)
+                .Include(n => n.MaNhanVienNavigation)
+                .FirstOrDefaultAsync(n => n.MaNhanVien == id);
 
         public async Task<NhanVien> AddAsync(NhanVien nhanVien)
         {
@@ -28,19 +31,25 @@ namespace Supermarket.Repositories
 
         public async Task<NhanVien> UpdateAsync(NhanVien nhanVien)
         {
-            nhanVien.UpdatedAt = DateTime.UtcNow;
             _context.NhanViens.Update(nhanVien);
             await _context.SaveChangesAsync();
             return nhanVien;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var nhanVien = await _context.NhanViens.FindAsync(id);
-            if (nhanVien == null) return false;
-            _context.NhanViens.Remove(nhanVien);
-            await _context.SaveChangesAsync();
-            return true;
+            try
+            {
+                var nhanVien = await _context.NhanViens.FindAsync(id);
+                if (nhanVien == null) return false;
+                _context.NhanViens.Remove(nhanVien);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

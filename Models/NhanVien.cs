@@ -17,7 +17,7 @@ public partial class NhanVien
 
     public string? Email { get; set; }
 
-    public string? VaiTro { get; set; }
+    public string? vaiTro { get; set; }
 
     public int? MaCuaHang { get; set; }
 
@@ -27,5 +27,5 @@ public partial class NhanVien
 
     public virtual CuaHang? MaCuaHangNavigation { get; set; }
 
-    public virtual TaiKhoan MaNhanVienNavigation { get; set; } = null!;
+    public virtual TaiKhoan? MaNhanVienNavigation { get; set; }
 }
