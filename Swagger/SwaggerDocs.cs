@@ -92,9 +92,9 @@ namespace Supermarket.Swagger
                     var controllerName = api.ActionDescriptor.RouteValues["controller"];
                     var tagName = controllerName switch
                     {
-                        "Auth" => "Authentication",
-                        "TaiKhoanManagement" => "TaiKhoan",
-                        "NhanVien" => "Quản lý Nhân viêns",
+                        "Auth" => "Xác thực và truy cập",
+                        "TaiKhoanManagement" => "Quản lý Tài khoản",
+                        "NhanVien" => "Quản lý Nhân viên",
                         _ => controllerName
                     };
                     return new[] { tagName };

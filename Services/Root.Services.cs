@@ -9,17 +9,15 @@ namespace Supermarket.Services
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddScoped<INhanVienRepository, NhanVienRepository>();
-            services.AddScoped<ITaiKhoanRepositories, TaiKhoanRepositories>();
             services.AddScoped<IAuthRepositories, AuthRepositories>();
-            services.AddScoped<ITaiKhoanManagementRepositories, TaiKhoanManagementRepositories>();
+            services.AddScoped<ITaiKhoanRepositories, TaiKhoanRepositories>();
         }
 
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<NhanVienService>();
-            services.AddScoped<ITaiKhoanService, TaiKhoanService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<ITaiKhoanManagementService, TaiKhoanManagementService>();
+            services.AddScoped<ITaiKhoanService, TaiKhoanService>();
         }
 
         public static void RegisterAllServices(this IServiceCollection services)

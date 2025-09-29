@@ -74,24 +74,6 @@
             API quản lý nhân viên
             </summary>
         </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.GetAllNhanVien">
-            <summary>
-            Lấy danh sách tất cả nhân viên
-            </summary>
-            <returns>Danh sách nhân viên</returns>
-            <response code="200">Trả về danh sách nhân viên thành công</response>
-            <response code="500">Lỗi server</response>
-        </member>
-        <member name="M:Supermarket.Controllers.NhanVienController.GetNhanVienById(System.Int32)">
-            <summary>
-            Lấy thông tin nhân viên theo mã
-            </summary>
-            <param name="id">Mã nhân viên</param>
-            <returns>Thông tin nhân viên</returns>
-            <response code="200">Trả về thông tin nhân viên thành công</response>
-            <response code="404">Không tìm thấy nhân viên</response>
-            <response code="500">Lỗi server</response>
-        </member>
         <member name="M:Supermarket.Controllers.NhanVienController.CreateNhanVien(Supermarket.DTOs.CreateNhanVienDto)">
             <summary>
             Tạo nhân viên mới
@@ -133,58 +115,33 @@
             <response code="404">Không tìm thấy nhân viên</response>
             <response code="500">Lỗi server</response>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.Login(Supermarket.DTOs.LoginRequestDto)">
-            <summary>
-            Đăng nhập
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.Register(Supermarket.DTOs.RegisterRequestDto)">
-            <summary>
-            Đăng ký tài khoản mới
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.ChangePassword(Supermarket.DTOs.ChangePasswordRequestDto)">
-            <summary>
-            Đổi mật khẩu
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.GetProfile">
-            <summary>
-            Lấy thông tin người dùng hiện tại
-            </summary>
-        </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanController.ValidateToken">
-            <summary>
-            Kiểm tra token có hợp lệ không
-            </summary>
-        </member>
-        <member name="T:Supermarket.Controllers.TaiKhoanManagementController">
+        <member name="T:Supermarket.Controllers.TaiKhoanController">
             <summary>
             TaiKhoan Management Controller - Quản lý CRUD tài khoản
             </summary>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.GetAllTaiKhoans(Supermarket.DTOs.TaiKhoanSearchDto)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.GetAllTaiKhoans(Supermarket.DTOs.TaiKhoanSearchDto)">
             <summary>
             Lấy danh sách tài khoản với phân trang và tìm kiếm
             </summary>
             <param name="searchDto">Thông tin tìm kiếm và phân trang</param>
             <returns>Danh sách tài khoản</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.GetTaiKhoanById(System.Int32)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.GetTaiKhoanById(System.Int32)">
             <summary>
             Lấy thông tin tài khoản theo ID
             </summary>
             <param name="id">ID tài khoản</param>
             <returns>Thông tin tài khoản</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.CreateTaiKhoan(Supermarket.DTOs.CreateTaiKhoanDto)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.CreateTaiKhoan(Supermarket.DTOs.CreateTaiKhoanDto)">
             <summary>
             Tạo tài khoản mới
             </summary>
             <param name="createDto">Thông tin tài khoản mới</param>
             <returns>Tài khoản đã tạo</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.UpdateTaiKhoan(System.Int32,Supermarket.DTOs.UpdateTaiKhoanDto)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.UpdateTaiKhoan(System.Int32,Supermarket.DTOs.UpdateTaiKhoanDto)">
             <summary>
             Cập nhật thông tin tài khoản
             </summary>
@@ -192,14 +149,14 @@
             <param name="updateDto">Thông tin cập nhật</param>
             <returns>Tài khoản đã cập nhật</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.DeleteTaiKhoan(System.Int32)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.DeleteTaiKhoan(System.Int32)">
             <summary>
             Xóa tài khoản
             </summary>
             <param name="id">ID tài khoản</param>
             <returns>Kết quả xóa</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.UpdateTaiKhoanStatus(System.Int32,System.String)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.UpdateTaiKhoanStatus(System.Int32,System.String)">
             <summary>
             Cập nhật trạng thái tài khoản
             </summary>
@@ -207,7 +164,7 @@
             <param name="status">Trạng thái mới</param>
             <returns>Kết quả cập nhật</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.ResetPassword(System.Int32,Supermarket.DTOs.ResetPasswordDto)">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.ResetPassword(System.Int32,Supermarket.DTOs.ResetPasswordDto)">
             <summary>
             Reset mật khẩu tài khoản
             </summary>
@@ -215,7 +172,7 @@
             <param name="resetDto">Thông tin mật khẩu mới</param>
             <returns>Kết quả reset</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.CheckEmailExists(System.String,System.Nullable{System.Int32})">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.CheckEmailExists(System.String,System.Nullable{System.Int32})">
             <summary>
             Kiểm tra email đã tồn tại
             </summary>
@@ -223,7 +180,7 @@
             <param name="excludeId">ID tài khoản loại trừ</param>
             <returns>Kết quả kiểm tra</returns>
         </member>
-        <member name="M:Supermarket.Controllers.TaiKhoanManagementController.CheckPhoneExists(System.String,System.Nullable{System.Int32})">
+        <member name="M:Supermarket.Controllers.TaiKhoanController.CheckPhoneExists(System.String,System.Nullable{System.Int32})">
             <summary>
             Kiểm tra số điện thoại đã tồn tại
             </summary>

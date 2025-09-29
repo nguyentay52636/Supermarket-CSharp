@@ -14,11 +14,11 @@ namespace Supermarket.Controllers
     [Route("api/[controller]")]
     [Authorize] // Tất cả API đều cần authentication
     [Tags("TaiKhoan Management")]
-    public class TaiKhoanManagementController : ControllerBase
+    public class TaiKhoanController : ControllerBase
     {
-        private readonly ITaiKhoanManagementService _taiKhoanManagementService;
+        private readonly ITaiKhoanService _taiKhoanManagementService;
 
-        public TaiKhoanManagementController(ITaiKhoanManagementService taiKhoanManagementService)
+        public TaiKhoanController(ITaiKhoanService taiKhoanManagementService)
         {
             _taiKhoanManagementService = taiKhoanManagementService;
         }

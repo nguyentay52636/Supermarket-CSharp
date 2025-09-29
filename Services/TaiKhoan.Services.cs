@@ -1,9 +1,6 @@
-using Microsoft.IdentityModel.Tokens;
 using Supermarket.DTOs;
 using Supermarket.Models;
 using Supermarket.Repositories.TaiKhoanRepositories;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,228 +8,177 @@ namespace Supermarket.Services
 {
     public interface ITaiKhoanService
     {
-        Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
-        Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto request);
-        Task<bool> ChangePasswordAsync(int userId, ChangePasswordRequestDto request);
-        Task<UserInfoDto?> GetUserInfoAsync(int userId);
+        // CRUD Operations
+        Task<TaiKhoanDto?> GetTaiKhoanByIdAsync(int id);
+        Task<TaiKhoanListResponseDto> GetAllTaiKhoansAsync(TaiKhoanSearchDto searchDto);
+        Task<TaiKhoanDto> CreateTaiKhoanAsync(CreateTaiKhoanDto createDto);
+        Task<TaiKhoanDto?> UpdateTaiKhoanAsync(int id, UpdateTaiKhoanDto updateDto);
+        Task<bool> DeleteTaiKhoanAsync(int id);
+
+        // Status Management
+        Task<bool> UpdateTaiKhoanStatusAsync(int id, string status);
+        Task<bool> ResetPasswordAsync(int id, ResetPasswordDto resetDto);
+
+        // Validation
+        Task<bool> CheckEmailExistsAsync(string email, int? excludeId = null);
+        Task<bool> CheckPhoneExistsAsync(string phone, int? excludeId = null);
     }
 
     public class TaiKhoanService : ITaiKhoanService
     {
-        private readonly ITaiKhoanRepositories _taiKhoanRepository;
-        private readonly IConfiguration _configuration;
+        private readonly ITaiKhoanRepositories _repository;
 
-        public TaiKhoanService(ITaiKhoanRepositories taiKhoanRepository, IConfiguration configuration)
+        public TaiKhoanService(ITaiKhoanRepositories repository)
         {
-            _taiKhoanRepository = taiKhoanRepository;
-            _configuration = configuration;
+            _repository = repository;
         }
 
-        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
+        public async Task<TaiKhoanDto?> GetTaiKhoanByIdAsync(int id)
         {
-            try
-            {
-                // Tìm tài khoản theo email hoặc số điện thoại
-                var taiKhoan = await _taiKhoanRepository.GetTaiKhoanByEmailAsync(request.EmailOrPhone) ??
-                              await _taiKhoanRepository.GetTaiKhoanByPhoneAsync(request.EmailOrPhone);
+            var taiKhoan = await _repository.GetTaiKhoanByIdAsync(id);
+            if (taiKhoan == null) return null;
 
-                if (taiKhoan == null)
-                {
-                    return new LoginResponseDto
-                    {
-                        Success = false,
-                        Message = "Tài khoản không tồn tại"
-                    };
-                }
-
-                // Kiểm tra mật khẩu
-                if (!VerifyPassword(request.Password, taiKhoan.MatKhau ?? ""))
-                {
-                    return new LoginResponseDto
-                    {
-                        Success = false,
-                        Message = "Mật khẩu không chính xác"
-                    };
-                }
-
-                // Kiểm tra trạng thái tài khoản
-                if (taiKhoan.TrangThai != "Active")
-                {
-                    return new LoginResponseDto
-                    {
-                        Success = false,
-                        Message = "Tài khoản đã bị khóa"
-                    };
-                }
-
-                // Tạo JWT token
-                var token = GenerateJwtToken(taiKhoan);
-
-                return new LoginResponseDto
-                {
-                    Success = true,
-                    Message = "Đăng nhập thành công",
-                    Token = token,
-                    UserInfo = new UserInfoDto
-                    {
-                        MaTaiKhoan = taiKhoan.MaTaiKhoan,
-                        TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
-                        Email = taiKhoan.Email ?? "",
-                        SoDienThoai = taiKhoan.SoDienThoai ?? "",
-                        MaQuyen = taiKhoan.MaQuyen,
-                        TenQuyen = taiKhoan.MaQuyenNavigation?.TenQuyen,
-                        TrangThai = taiKhoan.TrangThai ?? ""
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new LoginResponseDto
-                {
-                    Success = false,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                };
-            }
+            return MapToDto(taiKhoan);
         }
 
-        public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto request)
+        public async Task<TaiKhoanListResponseDto> GetAllTaiKhoansAsync(TaiKhoanSearchDto searchDto)
         {
-            try
-            {
-                // Kiểm tra email đã tồn tại
-                if (await _taiKhoanRepository.CheckEmailExistsAsync(request.Email))
-                {
-                    return new RegisterResponseDto
-                    {
-                        Success = false,
-                        Message = "Email đã được sử dụng"
-                    };
-                }
-
-                // Kiểm tra số điện thoại đã tồn tại
-                if (await _taiKhoanRepository.CheckPhoneExistsAsync(request.SoDienThoai))
-                {
-                    return new RegisterResponseDto
-                    {
-                        Success = false,
-                        Message = "Số điện thoại đã được sử dụng"
-                    };
-                }
-
-                // Tạo tài khoản mới
-                var taiKhoan = new TaiKhoan
-                {
-                    TenNguoiDung = request.TenNguoiDung,
-                    Email = request.Email,
-                    SoDienThoai = request.SoDienThoai,
-                    MatKhau = HashPassword(request.Password),
-                    MaQuyen = request.MaQuyen ?? 2, 
-                    TrangThai = "Active"
-                };
-
-                var createdTaiKhoan = await _taiKhoanRepository.CreateTaiKhoanAsync(taiKhoan);
-
-                return new RegisterResponseDto
-                {
-                    Success = true,
-                    Message = "Đăng ký thành công",
-                    UserInfo = new UserInfoDto
-                    {
-                        MaTaiKhoan = createdTaiKhoan.MaTaiKhoan,
-                        TenNguoiDung = createdTaiKhoan.TenNguoiDung ?? "",
-                        Email = createdTaiKhoan.Email ?? "",
-                        SoDienThoai = createdTaiKhoan.SoDienThoai ?? "",
-                        MaQuyen = createdTaiKhoan.MaQuyen,
-                        TrangThai = createdTaiKhoan.TrangThai ?? ""
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new RegisterResponseDto
-                {
-                    Success = false,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                };
-            }
-        }
-
-        public async Task<bool> ChangePasswordAsync(int userId, ChangePasswordRequestDto request)
-        {
-            try
-            {
-                var taiKhoan = await _taiKhoanRepository.GetTaiKhoanByIdAsync(userId);
-                if (taiKhoan == null) return false;
-
-                // Kiểm tra mật khẩu hiện tại
-                if (!VerifyPassword(request.CurrentPassword, taiKhoan.MatKhau ?? ""))
-                {
-                    return false;
-                }
-
-                // Cập nhật mật khẩu mới
-                taiKhoan.MatKhau = HashPassword(request.NewPassword);
-                return await _taiKhoanRepository.UpdateTaiKhoanAsync(taiKhoan);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<UserInfoDto?> GetUserInfoAsync(int userId)
-        {
-            try
-            {
-                var taiKhoan = await _taiKhoanRepository.GetTaiKhoanByIdAsync(userId);
-                if (taiKhoan == null) return null;
-
-                return new UserInfoDto
-                {
-                    MaTaiKhoan = taiKhoan.MaTaiKhoan,
-                    TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
-                    Email = taiKhoan.Email ?? "",
-                    SoDienThoai = taiKhoan.SoDienThoai ?? "",
-                    MaQuyen = taiKhoan.MaQuyen,
-                    TenQuyen = taiKhoan.MaQuyenNavigation?.TenQuyen,
-                    TrangThai = taiKhoan.TrangThai ?? ""
-                };
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private string GenerateJwtToken(TaiKhoan taiKhoan)
-        {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey ?? ""));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, taiKhoan.MaTaiKhoan.ToString()),
-                new Claim(ClaimTypes.Name, taiKhoan.TenNguoiDung ?? ""),
-                new Claim(ClaimTypes.Email, taiKhoan.Email ?? ""),
-                new Claim(ClaimTypes.MobilePhone, taiKhoan.SoDienThoai ?? ""),
-                new Claim(ClaimTypes.Role, taiKhoan.MaQuyenNavigation?.TenQuyen ?? "Customer"),
-                new Claim("MaQuyen", taiKhoan.MaQuyen?.ToString() ?? "2")
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(24), // Token hết hạn sau 24 giờ
-                signingCredentials: credentials
+            var (data, totalCount) = await _repository.GetTaiKhoansPagedAsync(
+                searchDto.Page,
+                searchDto.PageSize,
+                searchDto.TenNguoiDung,
+                searchDto.Email,
+                searchDto.SoDienThoai,
+                searchDto.MaQuyen,
+                searchDto.TrangThai,
+                searchDto.SortBy,
+                searchDto.SortDirection
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var totalPages = (int)Math.Ceiling((double)totalCount / searchDto.PageSize);
+
+            return new TaiKhoanListResponseDto
+            {
+                Data = data.Select(MapToListDto).ToList(),
+                TotalCount = totalCount,
+                Page = searchDto.Page,
+                PageSize = searchDto.PageSize,
+                TotalPages = totalPages
+            };
+        }
+
+        public async Task<TaiKhoanDto> CreateTaiKhoanAsync(CreateTaiKhoanDto createDto)
+        {
+            // Kiểm tra email đã tồn tại
+            if (await _repository.CheckEmailExistsAsync(createDto.Email))
+            {
+                throw new InvalidOperationException("Email đã được sử dụng");
+            }
+
+            // Kiểm tra số điện thoại đã tồn tại
+            if (await _repository.CheckPhoneExistsAsync(createDto.SoDienThoai))
+            {
+                throw new InvalidOperationException("Số điện thoại đã được sử dụng");
+            }
+
+            var taiKhoan = new TaiKhoan
+            {
+                TenNguoiDung = createDto.TenNguoiDung,
+                Email = createDto.Email,
+                SoDienThoai = createDto.SoDienThoai,
+                MatKhau = HashPassword(createDto.Password),
+                MaQuyen = createDto.MaQuyen,
+                TrangThai = createDto.TrangThai
+            };
+
+            var createdTaiKhoan = await _repository.CreateTaiKhoanAsync(taiKhoan);
+            return MapToDto(createdTaiKhoan);
+        }
+
+        public async Task<TaiKhoanDto?> UpdateTaiKhoanAsync(int id, UpdateTaiKhoanDto updateDto)
+        {
+            var taiKhoan = await _repository.GetTaiKhoanByIdAsync(id);
+            if (taiKhoan == null) return null;
+
+            // Kiểm tra email đã tồn tại (trừ tài khoản hiện tại)
+            if (await _repository.CheckEmailExistsAsync(updateDto.Email, id))
+            {
+                throw new InvalidOperationException("Email đã được sử dụng");
+            }
+
+            // Kiểm tra số điện thoại đã tồn tại (trừ tài khoản hiện tại)
+            if (await _repository.CheckPhoneExistsAsync(updateDto.SoDienThoai, id))
+            {
+                throw new InvalidOperationException("Số điện thoại đã được sử dụng");
+            }
+
+            taiKhoan.TenNguoiDung = updateDto.TenNguoiDung;
+            taiKhoan.Email = updateDto.Email;
+            taiKhoan.SoDienThoai = updateDto.SoDienThoai;
+            taiKhoan.MaQuyen = updateDto.MaQuyen;
+            taiKhoan.TrangThai = updateDto.TrangThai;
+
+            var success = await _repository.UpdateTaiKhoanAsync(taiKhoan);
+            if (!success) return null;
+
+            return MapToDto(taiKhoan);
+        }
+
+        public async Task<bool> DeleteTaiKhoanAsync(int id)
+        {
+            return await _repository.DeleteTaiKhoanAsync(id);
+        }
+
+        public async Task<bool> UpdateTaiKhoanStatusAsync(int id, string status)
+        {
+            return await _repository.UpdateTaiKhoanStatusAsync(id, status);
+        }
+
+        public async Task<bool> ResetPasswordAsync(int id, ResetPasswordDto resetDto)
+        {
+            var hashedPassword = HashPassword(resetDto.NewPassword);
+            return await _repository.ResetPasswordAsync(id, hashedPassword);
+        }
+
+        public async Task<bool> CheckEmailExistsAsync(string email, int? excludeId = null)
+        {
+            return await _repository.CheckEmailExistsAsync(email, excludeId);
+        }
+
+        public async Task<bool> CheckPhoneExistsAsync(string phone, int? excludeId = null)
+        {
+            return await _repository.CheckPhoneExistsAsync(phone, excludeId);
+        }
+
+        private TaiKhoanDto MapToDto(TaiKhoan taiKhoan)
+        {
+            return new TaiKhoanDto
+            {
+                MaTaiKhoan = taiKhoan.MaTaiKhoan,
+                TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
+                Email = taiKhoan.Email ?? "",
+                SoDienThoai = taiKhoan.SoDienThoai ?? "",
+                MaQuyen = taiKhoan.MaQuyen,
+                TenQuyen = taiKhoan.MaQuyenNavigation?.TenQuyen,
+                TrangThai = taiKhoan.TrangThai ?? "",
+                NgayTao = DateTime.Now, // TODO: Add NgayTao field to TaiKhoan model
+                NgayCapNhat = DateTime.Now // TODO: Add NgayCapNhat field to TaiKhoan model
+            };
+        }
+
+        private TaiKhoanListDto MapToListDto(TaiKhoan taiKhoan)
+        {
+            return new TaiKhoanListDto
+            {
+                MaTaiKhoan = taiKhoan.MaTaiKhoan,
+                TenNguoiDung = taiKhoan.TenNguoiDung ?? "",
+                Email = taiKhoan.Email ?? "",
+                SoDienThoai = taiKhoan.SoDienThoai ?? "",
+                MaQuyen = taiKhoan.MaQuyen,
+                TenQuyen = taiKhoan.MaQuyenNavigation?.TenQuyen,
+                TrangThai = taiKhoan.TrangThai ?? "",
+                NgayTao = DateTime.Now // TODO: Add NgayTao field to TaiKhoan model
+            };
         }
 
         private string HashPassword(string password)
@@ -240,12 +186,6 @@ namespace Supermarket.Services
             using var sha256 = SHA256.Create();
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password ?? ""));
             return Convert.ToBase64String(hashedBytes);
-        }
-
-        private bool VerifyPassword(string password, string hashedPassword)
-        {
-            var hashedInput = HashPassword(password);
-            return hashedInput == hashedPassword;
         }
     }
 }
