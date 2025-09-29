@@ -1,25 +1,31 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-namespace Supermarket.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace Supermarket.Models;
+
+public partial class NhanVien
 {
-    public class NhanVien
-    {
-        [Key]
-        public string MaNhanVien { get; set; } = Guid.NewGuid().ToString();
-        [Required, MaxLength(200)]
-        public required string TenNhanVien { get; set; }
-        [Required]
-        public required string GioiTinh { get; set; }
-        [Required]
-        public required string NgaySinh { get; set; }
-        [Required]
-        public required string SoDienThoai { get; set; }
-        [Required]
-        public required string vaiTro { get; set; }
-        public required string TrangThai { get; set; }
+    public int MaNhanVien { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    }
+    public string? TenNhanVien { get; set; }
 
+    public string? GioiTinh { get; set; }
+
+    public DateOnly? NgaySinh { get; set; }
+
+    public string? SoDienThoai { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? VaiTro { get; set; }
+
+    public int? MaCuaHang { get; set; }
+
+    public string? TrangThai { get; set; }
+
+    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+
+    public virtual CuaHang? MaCuaHangNavigation { get; set; }
+
+    public virtual TaiKhoan MaNhanVienNavigation { get; set; } = null!;
 }

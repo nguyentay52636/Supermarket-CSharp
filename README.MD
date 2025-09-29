@@ -3,7 +3,7 @@
 ## 📖 Mô tả dự án
 
 **Supermarket API** là hệ thống backend quản lý siêu thị được xây dựng bằng **.NET 9.0** và **ASP.NET Core Web API**. Hệ thống cung cấp các API endpoints để quản lý nhân viên, sản phẩm và các hoạt động kinh doanh của siêu thị.
-
+UML :https://dbdiagram.io/d/supermaket-68d8bf5dd2b621e42239053d
 ## 🛠️ Công nghệ sử dụng
 
 ### **Core Framework**

@@ -47,14 +47,12 @@ public class WeatherForecastController : ControllerBase
             }
 
             // Test query
-            var productCount = await _context.Products.CountAsync();
             var nhanVienCount = await _context.NhanViens.CountAsync();
 
             return Ok(new
             {
                 message = "Database connection successful",
                 success = true,
-                productCount = productCount,
                 nhanVienCount = nhanVienCount,
                 timestamp = DateTime.Now
             });
