@@ -1,0 +1,389 @@
+openapi: 3.0.3
+info:
+  title: Authentication API
+  version: v1
+  description: API xác thực gồm đăng nhập, đăng ký, đổi mật khẩu, hồ sơ, refresh token, logout
+servers:
+  - url: https://localhost:7000
+paths:
+  /api/Auth/login:
+    post:
+      tags: [Auth]
+      summary: Đăng nhập
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+      responses:
+        '200':
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoginResponseDto'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseLoginResponseDto'
+  /api/Auth/register:
+    post:
+      tags: [Auth]
+      summary: Đăng ký
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDto'
+      responses:
+        '200':
+          description: Đăng ký thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegisterResponseDto'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegisterResponseDto'
+  /api/Auth/change-password:
+    post:
+      tags: [Auth]
+      summary: Đổi mật khẩu
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequestDto'
+      responses:
+        '200':
+          description: Đổi mật khẩu thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '401':
+          description: Chưa xác thực
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/Auth/profile:
+    get:
+      tags: [Auth]
+      summary: Lấy thông tin người dùng hiện tại
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUserInfoDto'
+        '401':
+          description: Chưa xác thực
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUserInfoDto'
+        '404':
+          description: Không tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUserInfoDto'
+  /api/Auth/validate-token:
+    get:
+      tags: [Auth]
+      summary: Kiểm tra token
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Token hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '401':
+          description: Chưa xác thực
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/Auth/refresh-token:
+    post:
+      tags: [Auth]
+      summary: Làm mới token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequestDto'
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRefreshTokenResponseDto'
+        '400':
+          description: Lỗi yêu cầu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRefreshTokenResponseDto'
+  /api/Auth/logout:
+    post:
+      tags: [Auth]
+      summary: Đăng xuất
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '401':
+          description: Chưa xác thực
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/Auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Quên mật khẩu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseForgotPasswordResponseDto'
+        '400':
+          description: Lỗi yêu cầu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseForgotPasswordResponseDto'
+  /api/Auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Đặt lại mật khẩu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseResetPasswordResponseDto'
+        '400':
+          description: Lỗi yêu cầu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseResetPasswordResponseDto'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ApiResponseObject:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          nullable: true
+    ApiResponseLoginResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/LoginResponseDto'
+    ApiResponseRegisterResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/RegisterResponseDto'
+    ApiResponseUserInfoDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/UserInfoDto'
+    ApiResponseRefreshTokenResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/RefreshTokenResponseDto'
+    ApiResponseForgotPasswordResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ForgotPasswordResponseDto'
+    ApiResponseResetPasswordResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ResetPasswordResponseDto'
+    LoginRequestDto:
+      type: object
+      required: [EmailOrPhone, Password]
+      properties:
+        EmailOrPhone:
+          type: string
+        Password:
+          type: string
+    RegisterRequestDto:
+      type: object
+      required: [TenNguoiDung, Email, SoDienThoai, Password, ConfirmPassword]
+      properties:
+        TenNguoiDung:
+          type: string
+        Email:
+          type: string
+        SoDienThoai:
+          type: string
+        Password:
+          type: string
+        ConfirmPassword:
+          type: string
+        MaQuyen:
+          type: integer
+          format: int32
+          nullable: true
+    ChangePasswordRequestDto:
+      type: object
+      required: [CurrentPassword, NewPassword, ConfirmNewPassword]
+      properties:
+        CurrentPassword:
+          type: string
+        NewPassword:
+          type: string
+        ConfirmNewPassword:
+          type: string
+    RefreshTokenRequestDto:
+      type: object
+      required: [RefreshToken]
+      properties:
+        RefreshToken:
+          type: string
+    RefreshTokenResponseDto:
+      type: object
+      properties:
+        Success:
+          type: boolean
+        Message:
+          type: string
+        Token:
+          type: string
+        RefreshToken:
+          type: string
+    ForgotPasswordRequestDto:
+      type: object
+      required: [Email]
+      properties:
+        Email:
+          type: string
+    ForgotPasswordResponseDto:
+      type: object
+      properties:
+        Success:
+          type: boolean
+        Message:
+          type: string
+        ResetToken:
+          type: string
+    ResetPasswordRequestDto:
+      type: object
+      required: [ResetToken, NewPassword, ConfirmNewPassword]
+      properties:
+        ResetToken:
+          type: string
+        NewPassword:
+          type: string
+        ConfirmNewPassword:
+          type: string
+    ResetPasswordResponseDto:
+      type: object
+      properties:
+        Success:
+          type: boolean
+        Message:
+          type: string
+    UserInfoDto:
+      type: object
+      properties:
+        MaTaiKhoan:
+          type: integer
+          format: int32
+        TenNguoiDung:
+          type: string
+        Email:
+          type: string
+        SoDienThoai:
+          type: string
+        MaQuyen:
+          type: integer
+          format: int32
+          nullable: true
+        TenQuyen:
+          type: string
+          nullable: true
+        TrangThai:
+          type: string
