@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Supermarket.DTOs
 {
-    // TaiKhoan Management DTOs - Cho CRUD operations
     public class TaiKhoanDto
     {
         public int MaTaiKhoan { get; set; }

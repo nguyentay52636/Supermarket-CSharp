@@ -45,6 +45,18 @@ namespace Supermarket.Swagger
                     }
                 });
 
+                c.SwaggerDoc("khachhang", new OpenApiInfo
+                {
+                    Title = "Quản lý Khách hàng",
+                    Version = "v1",
+                    Description = "API quản lý khách hàng: CRUD, tìm kiếm, trạng thái",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Supermarket Team",
+                        Email = "support@supermarket.com"
+                    }
+                });
+
                 // Add default Swagger document
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -68,6 +80,7 @@ namespace Supermarket.Swagger
                         "Auth" => "Xác thực và truy cập",
                         "TaiKhoanManagement" => "Quản lý Tài khoản",
                         "NhanVien" => "Quản lý Nhân viên",
+                        "KhachHang" => "Quản lý Khách hàng",
                         _ => controllerName
                     };
                     return new[] { tagName };
@@ -81,6 +94,7 @@ namespace Supermarket.Swagger
                         "auth" => controllerName == "Auth",
                         "taikhoan" => controllerName == "TaiKhoanManagement",
                         "nhanvien" => controllerName == "NhanVien",
+                        "khachhang" => controllerName == "KhachHang",
                         "v1" => true, // Default document includes all controllers
                         _ => true
                     };
@@ -108,6 +122,7 @@ namespace Supermarket.Swagger
                     c.SwaggerEndpoint("/swagger/auth/swagger.json", "Authentication API");
                     c.SwaggerEndpoint("/swagger/taikhoan/swagger.json", "TaiKhoan Management API");
                     c.SwaggerEndpoint("/swagger/nhanvien/swagger.json", "NhanVien Management API");
+                    c.SwaggerEndpoint("/swagger/khachhang/swagger.json", "KhachHang Management API");
 
                     // Set default to v1 (all APIs)
                     c.RoutePrefix = "swagger";
