@@ -12,7 +12,7 @@ namespace Supermarket.Extensions
                 MaKhachHang = kh.MaKhachHang,
                 TenKhachHang = kh.TenKhachHang ?? string.Empty,
                 DiaChi = kh.DiaChi,
-                DiemTichLuy = kh.DiemTichLuy,
+                DiemTichLuy = kh.DiemTichLuy, 
                 HangThanhVien = kh.HangThanhVien,
                 MaTaiKhoan = kh.MaTaiKhoan,
                 TrangThai = kh.TrangThai

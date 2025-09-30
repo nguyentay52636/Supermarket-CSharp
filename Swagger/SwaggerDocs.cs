@@ -21,7 +21,7 @@ namespace Supermarket.Swagger
                     }
                 });
 
-                c.SwaggerDoc("taikhoan", new OpenApiInfo
+                c.SwaggerDoc("Quản lý Tài khoản", new OpenApiInfo
                 {
                     Title = "TaiKhoan Management API",
                     Version = "v1",
@@ -33,7 +33,7 @@ namespace Supermarket.Swagger
                     }
                 });
 
-                c.SwaggerDoc("nhanvien", new OpenApiInfo
+                c.SwaggerDoc("Quản lý Nhân viên", new OpenApiInfo
                 {
                     Title = "Quản lý Nhân viên",
                     Version = "v1",
@@ -57,7 +57,6 @@ namespace Supermarket.Swagger
                     }
                 });
 
-                // Add default Swagger document
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Supermarket API",
@@ -95,12 +94,11 @@ namespace Supermarket.Swagger
                         "taikhoan" => controllerName == "TaiKhoanManagement",
                         "nhanvien" => controllerName == "NhanVien",
                         "khachhang" => controllerName == "KhachHang",
-                        "v1" => true, // Default document includes all controllers
+                        "v1" => true,
                         _ => true
                     };
                 });
 
-                // Include XML comments if available
                 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = System.IO.Path.Combine(System.AppContext.BaseDirectory, xmlFile);
                 if (System.IO.File.Exists(xmlPath))
@@ -117,14 +115,12 @@ namespace Supermarket.Swagger
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    // Configure multiple Swagger endpoints
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Supermarket API (All)");
                     c.SwaggerEndpoint("/swagger/auth/swagger.json", "Authentication API");
                     c.SwaggerEndpoint("/swagger/taikhoan/swagger.json", "TaiKhoan Management API");
                     c.SwaggerEndpoint("/swagger/nhanvien/swagger.json", "NhanVien Management API");
                     c.SwaggerEndpoint("/swagger/khachhang/swagger.json", "KhachHang Management API");
 
-                    // Set default to v1 (all APIs)
                     c.RoutePrefix = "swagger";
                     c.DocumentTitle = "Supermarket API Documentation";
 

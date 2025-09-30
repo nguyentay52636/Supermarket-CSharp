@@ -25,13 +25,13 @@ var httpsPort = 7000;
 KillProcessOnPort(httpPort);
 KillProcessOnPort(httpsPort);
 
-// Cấu hình URL cố định
 builder.WebHost.UseUrls($"http://localhost:{httpPort};https://localhost:{httpsPort}");
 
 var app = builder.Build();
 
 app.ConfigureSwaggerUI();
 
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -40,7 +40,7 @@ app.MapControllers();
 Console.WriteLine($"🚀 Server started successfully!");
 Console.WriteLine($"📱 HTTP:  http://localhost:{httpPort}");
 Console.WriteLine($"🔒 HTTPS: https://localhost:{httpsPort}");
-Console.WriteLine($"📚 Swagger: https://localhost:{httpsPort}/swagger");
+Console.WriteLine($"📚 Docs: https://localhost:{httpsPort}/docs");
 Console.WriteLine($"Press Ctrl+C to stop the server");
 
 app.Run();
@@ -75,11 +75,11 @@ static void KillProcessOnPort(int port)
                         {
                             var killProcess = Process.GetProcessById(processId);
                             killProcess.Kill();
-                            Console.WriteLine($"✅ Killed process {processId} on port {port}");
+                            // Console.WriteLine($"✅ Killed process {processId} on port {port}");
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"⚠️  Could not kill process {processId}: {ex.Message}");
+                            // Console.WriteLine($"⚠️  Could not kill process {processId}: {ex.Message}");
                         }
                     }
                 }
