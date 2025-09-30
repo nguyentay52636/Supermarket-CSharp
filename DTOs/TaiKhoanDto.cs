@@ -35,7 +35,7 @@ namespace Supermarket.DTOs
         public string Password { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Mã quyền là bắt buộc")]
-        public int MaQuyen { get; set; } = 3; // Mặc định là khách hàng
+        public int MaQuyen { get; set; } = 3;
 
         public string TrangThai { get; set; } = "Active";
     }
@@ -88,7 +88,7 @@ namespace Supermarket.DTOs
 
     // Dùng cho endpoint không phân trang: chỉ giữ bộ lọc cơ bản
 
-   
+
     public class UserInfoDto
     {
         public int MaTaiKhoan { get; set; }

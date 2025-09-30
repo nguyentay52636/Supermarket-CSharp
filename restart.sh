@@ -1,20 +1,14 @@
 #!/bin/bash
-
-# Supermarket API - Run Script
-# Tự động kill port cũ và start lại ứng dụng
-
 echo "🔄 Restarting Supermarket API..."
 
 # Định nghĩa ports
 HTTP_PORT=5295
 HTTPS_PORT=7000
 
-# Hàm kill process trên port
 kill_port() {
     local port=$1
     echo "🔍 Checking port $port..."
     
-    # Tìm process đang sử dụng port
     local pids=$(lsof -ti:$port 2>/dev/null)
     
     if [ ! -z "$pids" ]; then
