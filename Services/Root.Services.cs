@@ -3,6 +3,7 @@ using Supermarket.Repositories.KhachHangRepositories;
 using Supermarket.Repositories.TaiKhoanRepositories;
 using Supermarket.Repositories.AuthRepositories;
 using Supermarket.Repositories.SanPhamRepositories;
+using Supermarket.Repositories.HoaDonRepositories;
 
 namespace Supermarket.Services
 {
@@ -15,6 +16,7 @@ namespace Supermarket.Services
             services.AddScoped<IAuthRepositories, AuthRepositories>();
             services.AddScoped<ITaiKhoanRepositories, TaiKhoanRepositories>();
             services.AddScoped<ISanPhamRepository, SanPhamRepository>();
+            services.AddScoped<IHoaDonRepository, HoaDonRepository>();
         }
 
         public static void RegisterServices(this IServiceCollection services)
@@ -25,6 +27,7 @@ namespace Supermarket.Services
             services.AddScoped<ITaiKhoanService, TaiKhoanService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<ISanPhamService, SanPhamService>();
+            services.AddScoped<IHoaDonService, HoaDonService>();
         }
 
         public static void RegisterAllServices(this IServiceCollection services)
