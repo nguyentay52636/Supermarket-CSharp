@@ -1,0 +1,662 @@
+openapi: 3.0.3
+info:
+  title: Sản Phẩm API
+  version: v1
+  description: API quản lý sản phẩm gồm CRUD operations, tìm kiếm, upload hình ảnh và quản lý thông tin sản phẩm
+servers:
+  - url: https://localhost:7000
+paths:
+  /api/SanPham:
+    get:
+      tags: [Sản Phẩm]
+      summary: Lấy danh sách tất cả sản phẩm
+      description: Trả về danh sách tất cả sản phẩm trong hệ thống
+      responses:
+        '200':
+          description: Lấy danh sách sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPhamList'
+    post:
+      tags: [Sản Phẩm]
+      summary: Tạo sản phẩm mới (với hình ảnh)
+      description: Tạo một sản phẩm mới với khả năng upload hình ảnh
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                TenSanPham:
+                  type: string
+                  description: Tên sản phẩm (bắt buộc)
+                  example: "iPhone 15 Pro Max"
+                DonVi:
+                  type: string
+                  description: Đơn vị
+                  example: "Cái"
+                SoLuongTon:
+                  type: integer
+                  description: Số lượng tồn
+                  example: 50
+                MaThuongHieu:
+                  type: integer
+                  description: Mã thương hiệu
+                  example: 1
+                MaLoai:
+                  type: integer
+                  description: Mã loại
+                  example: 1
+                MoTa:
+                  type: string
+                  description: Mô tả
+                  example: "Điện thoại thông minh cao cấp"
+                GiaBan:
+                  type: number
+                  format: decimal
+                  description: Giá bán
+                  example: 29990000
+                XuatXu:
+                  type: string
+                  description: Xuất xứ
+                  example: "Trung Quốc"
+                Hsd:
+                  type: string
+                  format: date
+                  description: Hạn sử dụng
+                  example: "2025-12-31"
+                image:
+                  type: string
+                  format: binary
+                  description: Hình ảnh sản phẩm
+      responses:
+        '201':
+          description: Tạo sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPham'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/SanPham/json:
+    post:
+      tags: [Sản Phẩm]
+      summary: Tạo sản phẩm mới (JSON)
+      description: Tạo một sản phẩm mới chỉ với dữ liệu JSON (không có hình ảnh)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSanPhamDto'
+            example:
+              TenSanPham: "iPhone 15 Pro Max"
+              DonVi: "Cái"
+              SoLuongTon: 50
+              MaThuongHieu: 1
+              MaLoai: 1
+              MoTa: "Điện thoại thông minh cao cấp"
+              GiaBan: 29990000
+              XuatXu: "Trung Quốc"
+              Hsd: "2025-12-31"
+              HinhAnh: "https://example.com/image.jpg"
+      responses:
+        '201':
+          description: Tạo sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPham'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/SanPham/search:
+    get:
+      tags: [Sản Phẩm]
+      summary: Tìm kiếm sản phẩm
+      description: Tìm kiếm sản phẩm với các bộ lọc nâng cao
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Từ khóa tìm kiếm (tên sản phẩm, mô tả)
+          schema:
+            type: string
+          example: "iPhone"
+        - name: loaiId
+          in: query
+          required: false
+          description: Mã loại sản phẩm
+          schema:
+            type: integer
+            format: int32
+          example: 1
+        - name: thuongHieuId
+          in: query
+          required: false
+          description: Mã thương hiệu
+          schema:
+            type: integer
+            format: int32
+          example: 1
+        - name: minPrice
+          in: query
+          required: false
+          description: Giá tối thiểu
+          schema:
+            type: number
+            format: decimal
+          example: 1000000
+        - name: maxPrice
+          in: query
+          required: false
+          description: Giá tối đa
+          schema:
+            type: number
+            format: decimal
+          example: 50000000
+      responses:
+        '200':
+          description: Tìm kiếm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPhamList'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/SanPham/{id}:
+    get:
+      tags: [Sản Phẩm]
+      summary: Lấy thông tin sản phẩm theo ID
+      description: Trả về thông tin chi tiết của một sản phẩm dựa trên mã sản phẩm
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã sản phẩm
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      responses:
+        '200':
+          description: Lấy thông tin sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPham'
+        '404':
+          description: Không tìm thấy sản phẩm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+    put:
+      tags: [Sản Phẩm]
+      summary: Cập nhật sản phẩm (với hình ảnh)
+      description: Cập nhật thông tin sản phẩm với khả năng upload hình ảnh mới
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã sản phẩm
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                MaSanPham:
+                  type: integer
+                  description: Mã sản phẩm (bắt buộc)
+                  example: 1
+                TenSanPham:
+                  type: string
+                  description: Tên sản phẩm (bắt buộc)
+                  example: "iPhone 15 Pro Max"
+                DonVi:
+                  type: string
+                  description: Đơn vị
+                  example: "Cái"
+                SoLuongTon:
+                  type: integer
+                  description: Số lượng tồn
+                  example: 45
+                MaThuongHieu:
+                  type: integer
+                  description: Mã thương hiệu
+                  example: 1
+                MaLoai:
+                  type: integer
+                  description: Mã loại
+                  example: 1
+                MoTa:
+                  type: string
+                  description: Mô tả
+                  example: "Điện thoại thông minh cao cấp - Phiên bản cập nhật"
+                GiaBan:
+                  type: number
+                  format: decimal
+                  description: Giá bán
+                  example: 28990000
+                XuatXu:
+                  type: string
+                  description: Xuất xứ
+                  example: "Trung Quốc"
+                Hsd:
+                  type: string
+                  format: date
+                  description: Hạn sử dụng
+                  example: "2025-12-31"
+                TrangThai:
+                  type: string
+                  description: Trạng thái
+                  example: "Active"
+                image:
+                  type: string
+                  format: binary
+                  description: Hình ảnh sản phẩm mới
+      responses:
+        '200':
+          description: Cập nhật sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPham'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '404':
+          description: Không tìm thấy sản phẩm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+    delete:
+      tags: [Sản Phẩm]
+      summary: Xóa sản phẩm
+      description: Xóa một sản phẩm khỏi hệ thống dựa trên mã sản phẩm
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã sản phẩm
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      responses:
+        '200':
+          description: Xóa sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseBoolean'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/SanPham/{id}/json:
+    put:
+      tags: [Sản Phẩm]
+      summary: Cập nhật sản phẩm (JSON)
+      description: Cập nhật thông tin sản phẩm chỉ với dữ liệu JSON (không có hình ảnh)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã sản phẩm
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSanPhamDto'
+            example:
+              MaSanPham: 1
+              TenSanPham: "iPhone 15 Pro Max"
+              DonVi: "Cái"
+              SoLuongTon: 45
+              MaThuongHieu: 1
+              MaLoai: 1
+              MoTa: "Điện thoại thông minh cao cấp - Phiên bản cập nhật"
+              GiaBan: 28990000
+              XuatXu: "Trung Quốc"
+              Hsd: "2025-12-31"
+              HinhAnh: "https://example.com/new-image.jpg"
+              TrangThai: "Active"
+      responses:
+        '200':
+          description: Cập nhật sản phẩm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSanPham'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '404':
+          description: Không tìm thấy sản phẩm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+components:
+  schemas:
+    ApiResponseObject:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Thành công"
+        data:
+          nullable: true
+          description: Dữ liệu trả về
+    ApiResponseBoolean:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Xóa sản phẩm thành công"
+        data:
+          type: boolean
+          description: Kết quả thực hiện
+          example: true
+    ApiResponseSanPham:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Lấy thông tin sản phẩm thành công"
+        data:
+          $ref: '#/components/schemas/SanPhamDto'
+    ApiResponseSanPhamList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Lấy danh sách sản phẩm thành công"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SanPhamDto'
+    SanPhamDto:
+      type: object
+      properties:
+        MaSanPham:
+          type: integer
+          format: int32
+          description: Mã sản phẩm
+          example: 1
+        TenSanPham:
+          type: string
+          description: Tên sản phẩm
+          example: "iPhone 15 Pro Max"
+        DonVi:
+          type: string
+          nullable: true
+          description: Đơn vị
+          example: "Cái"
+        SoLuongTon:
+          type: integer
+          format: int32
+          nullable: true
+          description: Số lượng tồn
+          example: 50
+        MaThuongHieu:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã thương hiệu
+          example: 1
+        MaLoai:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã loại
+          example: 1
+        MoTa:
+          type: string
+          nullable: true
+          description: Mô tả
+          example: "Điện thoại thông minh cao cấp"
+        GiaBan:
+          type: number
+          format: decimal
+          nullable: true
+          description: Giá bán
+          example: 29990000
+        HinhAnh:
+          type: string
+          nullable: true
+          description: Hình ảnh
+          example: "https://example.com/image.jpg"
+        XuatXu:
+          type: string
+          nullable: true
+          description: Xuất xứ
+          example: "Trung Quốc"
+        Hsd:
+          type: string
+          format: date
+          nullable: true
+          description: Hạn sử dụng
+          example: "2025-12-31"
+        TrangThai:
+          type: string
+          nullable: true
+          description: Trạng thái
+          example: "Active"
+    CreateSanPhamDto:
+      type: object
+      required: [TenSanPham]
+      properties:
+        TenSanPham:
+          type: string
+          maxLength: 255
+          description: Tên sản phẩm (bắt buộc, tối đa 255 ký tự)
+          example: "iPhone 15 Pro Max"
+        DonVi:
+          type: string
+          maxLength: 50
+          nullable: true
+          description: Đơn vị (tối đa 50 ký tự)
+          example: "Cái"
+        SoLuongTon:
+          type: integer
+          format: int32
+          minimum: 0
+          nullable: true
+          description: Số lượng tồn (tối thiểu 0)
+          example: 50
+        MaThuongHieu:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã thương hiệu
+          example: 1
+        MaLoai:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã loại
+          example: 1
+        MoTa:
+          type: string
+          maxLength: 2000
+          nullable: true
+          description: Mô tả (tối đa 2000 ký tự)
+          example: "Điện thoại thông minh cao cấp"
+        GiaBan:
+          type: number
+          format: decimal
+          minimum: 0
+          nullable: true
+          description: Giá bán (tối thiểu 0)
+          example: 29990000
+        XuatXu:
+          type: string
+          maxLength: 500
+          nullable: true
+          description: Xuất xứ (tối đa 500 ký tự)
+          example: "Trung Quốc"
+        Hsd:
+          type: string
+          format: date
+          nullable: true
+          description: Hạn sử dụng
+          example: "2025-12-31"
+        HinhAnh:
+          type: string
+          nullable: true
+          description: Hình ảnh
+          example: "https://example.com/image.jpg"
+    UpdateSanPhamDto:
+      type: object
+      required: [MaSanPham, TenSanPham]
+      properties:
+        MaSanPham:
+          type: integer
+          format: int32
+          description: Mã sản phẩm (bắt buộc)
+          example: 1
+        TenSanPham:
+          type: string
+          maxLength: 255
+          description: Tên sản phẩm (bắt buộc, tối đa 255 ký tự)
+          example: "iPhone 15 Pro Max"
+        DonVi:
+          type: string
+          maxLength: 50
+          nullable: true
+          description: Đơn vị (tối đa 50 ký tự)
+          example: "Cái"
+        SoLuongTon:
+          type: integer
+          format: int32
+          minimum: 0
+          nullable: true
+          description: Số lượng tồn (tối thiểu 0)
+          example: 45
+        MaThuongHieu:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã thương hiệu
+          example: 1
+        MaLoai:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã loại
+          example: 1
+        MoTa:
+          type: string
+          maxLength: 2000
+          nullable: true
+          description: Mô tả (tối đa 2000 ký tự)
+          example: "Điện thoại thông minh cao cấp - Phiên bản cập nhật"
+        GiaBan:
+          type: number
+          format: decimal
+          minimum: 0
+          nullable: true
+          description: Giá bán (tối thiểu 0)
+          example: 28990000
+        XuatXu:
+          type: string
+          maxLength: 500
+          nullable: true
+          description: Xuất xứ (tối đa 500 ký tự)
+          example: "Trung Quốc"
+        Hsd:
+          type: string
+          format: date
+          nullable: true
+          description: Hạn sử dụng
+          example: "2025-12-31"
+        HinhAnh:
+          type: string
+          maxLength: 1000
+          nullable: true
+          description: Hình ảnh (tối đa 1000 ký tự)
+          example: "https://example.com/new-image.jpg"
+        TrangThai:
+          type: string
+          nullable: true
+          description: Trạng thái
+          example: "Active"

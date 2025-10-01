@@ -1,0 +1,384 @@
+openapi: 3.0.3
+info:
+  title: Nhân Viên API
+  version: v1
+  description: API quản lý nhân viên gồm CRUD operations, tìm kiếm và quản lý thông tin nhân viên
+servers:
+  - url: https://localhost:7000
+paths:
+  /api/NhanVien:
+    get:
+      tags: [Nhân Viên]
+      summary: Lấy danh sách tất cả nhân viên
+      description: Trả về danh sách tất cả nhân viên trong hệ thống
+      responses:
+        '200':
+          description: Lấy danh sách nhân viên thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNhanVienList'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+    post:
+      tags: [Nhân Viên]
+      summary: Tạo nhân viên mới
+      description: Tạo một nhân viên mới trong hệ thống
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNhanVienDto'
+            example:
+              TenNhanVien: "Nguyễn Văn A"
+              GioiTinh: "Nam"
+              NgaySinh: "1990-01-15"
+              SoDienThoai: "0123456789"
+              Email: "nguyenvana@example.com"
+              VaiTro: "Nhân viên bán hàng"
+              MaCuaHang: 1
+      responses:
+        '201':
+          description: Tạo nhân viên thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNhanVien'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/NhanVien/{id}:
+    get:
+      tags: [Nhân Viên]
+      summary: Lấy thông tin nhân viên theo ID
+      description: Trả về thông tin chi tiết của một nhân viên dựa trên mã nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã nhân viên
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      responses:
+        '200':
+          description: Lấy thông tin nhân viên thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNhanVien'
+        '404':
+          description: Không tìm thấy nhân viên
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+    put:
+      tags: [Nhân Viên]
+      summary: Cập nhật thông tin nhân viên
+      description: Cập nhật thông tin của một nhân viên dựa trên mã nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã nhân viên
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNhanVienDto'
+            example:
+              MaNhanVien: 1
+              TenNhanVien: "Nguyễn Văn A"
+              GioiTinh: "Nam"
+              NgaySinh: "1990-01-15"
+              SoDienThoai: "0123456789"
+              Email: "nguyenvana@example.com"
+              VaiTro: "Quản lý"
+              MaCuaHang: 1
+              TrangThai: "Active"
+      responses:
+        '200':
+          description: Cập nhật nhân viên thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNhanVien'
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '404':
+          description: Không tìm thấy nhân viên
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+    delete:
+      tags: [Nhân Viên]
+      summary: Xóa nhân viên
+      description: Xóa một nhân viên khỏi hệ thống dựa trên mã nhân viên
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mã nhân viên
+          schema:
+            type: integer
+            format: int32
+          example: 1
+      responses:
+        '200':
+          description: Xóa nhân viên thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '404':
+          description: Không tìm thấy nhân viên
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+  /api/NhanVien/search:
+    get:
+      tags: [Nhân Viên]
+      summary: Tìm kiếm nhân viên
+      description: Tìm kiếm nhân viên dựa trên từ khóa (tên, email, số điện thoại)
+      parameters:
+        - name: searchTerm
+          in: query
+          required: true
+          description: Từ khóa tìm kiếm
+          schema:
+            type: string
+          example: "Nguyễn Văn A"
+      responses:
+        '200':
+          description: Tìm kiếm thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNhanVienList'
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+components:
+  schemas:
+    ApiResponseObject:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Thành công"
+        data:
+          nullable: true
+          description: Dữ liệu trả về
+    ApiResponseNhanVien:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Lấy thông tin nhân viên thành công"
+        data:
+          $ref: '#/components/schemas/NhanVienDto'
+    ApiResponseNhanVienList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công
+          example: true
+        message:
+          type: string
+          description: Thông báo
+          example: "Lấy danh sách nhân viên thành công"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NhanVienDto'
+    NhanVienDto:
+      type: object
+      properties:
+        MaNhanVien:
+          type: integer
+          format: int32
+          description: Mã nhân viên
+          example: 1
+        TenNhanVien:
+          type: string
+          description: Tên nhân viên
+          example: "Nguyễn Văn A"
+        GioiTinh:
+          type: string
+          description: Giới tính
+          example: "Nam"
+        NgaySinh:
+          type: string
+          format: date
+          nullable: true
+          description: Ngày sinh
+          example: "1990-01-15"
+        SoDienThoai:
+          type: string
+          description: Số điện thoại
+          example: "0123456789"
+        Email:
+          type: string
+          nullable: true
+          description: Email
+          example: "nguyenvana@example.com"
+        VaiTro:
+          type: string
+          description: Vai trò
+          example: "Nhân viên bán hàng"
+        MaCuaHang:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã cửa hàng
+          example: 1
+        TrangThai:
+          type: string
+          nullable: true
+          description: Trạng thái
+          example: "Active"
+    CreateNhanVienDto:
+      type: object
+      required: [TenNhanVien, GioiTinh, NgaySinh, SoDienThoai, VaiTro]
+      properties:
+        TenNhanVien:
+          type: string
+          maxLength: 200
+          description: Tên nhân viên (bắt buộc, tối đa 200 ký tự)
+          example: "Nguyễn Văn A"
+        GioiTinh:
+          type: string
+          description: Giới tính (bắt buộc)
+          example: "Nam"
+        NgaySinh:
+          type: string
+          format: date
+          description: Ngày sinh (bắt buộc)
+          example: "1990-01-15"
+        SoDienThoai:
+          type: string
+          description: Số điện thoại (bắt buộc)
+          example: "0123456789"
+        Email:
+          type: string
+          format: email
+          nullable: true
+          description: Email (không bắt buộc, phải đúng định dạng email)
+          example: "nguyenvana@example.com"
+        VaiTro:
+          type: string
+          description: Vai trò (bắt buộc)
+          example: "Nhân viên bán hàng"
+        MaCuaHang:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã cửa hàng (không bắt buộc)
+          example: 1
+    UpdateNhanVienDto:
+      type: object
+      required: [MaNhanVien, TenNhanVien, GioiTinh, NgaySinh, SoDienThoai, VaiTro]
+      properties:
+        MaNhanVien:
+          type: integer
+          format: int32
+          description: Mã nhân viên (bắt buộc)
+          example: 1
+        TenNhanVien:
+          type: string
+          maxLength: 200
+          description: Tên nhân viên (bắt buộc, tối đa 200 ký tự)
+          example: "Nguyễn Văn A"
+        GioiTinh:
+          type: string
+          description: Giới tính (bắt buộc)
+          example: "Nam"
+        NgaySinh:
+          type: string
+          format: date
+          description: Ngày sinh (bắt buộc)
+          example: "1990-01-15"
+        SoDienThoai:
+          type: string
+          description: Số điện thoại (bắt buộc)
+          example: "0123456789"
+        Email:
+          type: string
+          format: email
+          nullable: true
+          description: Email (không bắt buộc, phải đúng định dạng email)
+          example: "nguyenvana@example.com"
+        VaiTro:
+          type: string
+          description: Vai trò (bắt buộc)
+          example: "Quản lý"
+        MaCuaHang:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã cửa hàng (không bắt buộc)
+          example: 1
+        TrangThai:
+          type: string
+          nullable: true
+          description: Trạng thái (không bắt buộc)
+          example: "Active"

@@ -1,0 +1,666 @@
+openapi: 3.0.3
+info:
+  title: TaiKhoan API
+  description: API quản lý tài khoản người dùng trong hệ thống siêu thị
+  version: 1.0.0
+  contact:
+    name: Supermarket API Support
+    email: support@supermarket.com
+
+servers:
+  - url: https://localhost:7000/api
+    description: Development server
+  - url: https://api.supermarket.com/api
+    description: Production server
+
+tags:
+  - name: TaiKhoan
+    description: Quản lý tài khoản người dùng
+
+paths:
+  /TaiKhoan:
+    get:
+      tags:
+        - TaiKhoan
+      summary: Lấy danh sách tất cả tài khoản
+      description: Trả về danh sách tất cả tài khoản trong hệ thống
+      operationId: GetAllTaiKhoans
+      responses:
+        '200':
+          description: Lấy danh sách tài khoản thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanListDto'
+              example:
+                success: true
+                message: "Lấy danh sách tài khoản thành công"
+                data:
+                  - maTaiKhoan: 1
+                    tenNguoiDung: "Nguyễn Văn A"
+                    email: "nguyenvana@email.com"
+                    soDienThoai: "0123456789"
+                    maQuyen: 1
+                    tenQuyen: "Admin"
+                    trangThai: "Active"
+                    ngayTao: "2024-01-01T00:00:00Z"
+        '500':
+          description: Lỗi server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              example:
+                success: false
+                message: "Lỗi server: Internal server error"
+                data: null
+
+    post:
+      tags:
+        - TaiKhoan
+      summary: Tạo tài khoản mới
+      description: Tạo một tài khoản người dùng mới trong hệ thống
+      operationId: CreateTaiKhoan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaiKhoanDto'
+            example:
+              tenNguoiDung: "Nguyễn Văn B"
+              email: "nguyenvanb@email.com"
+              soDienThoai: "0987654321"
+              password: "password123"
+              maQuyen: 2
+              trangThai: "Active"
+      responses:
+        '201':
+          description: Tạo tài khoản thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              example:
+                success: true
+                message: "Tạo tài khoản thành công"
+                data:
+                  maTaiKhoan: 2
+                  tenNguoiDung: "Nguyễn Văn B"
+                  email: "nguyenvanb@email.com"
+                  soDienThoai: "0987654321"
+                  maQuyen: 2
+                  tenQuyen: "User"
+                  trangThai: "Active"
+                  ngayTao: "2024-01-15T10:30:00Z"
+                  ngayCapNhat: "2024-01-15T10:30:00Z"
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ hoặc lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              examples:
+                validation_error:
+                  summary: Lỗi validation
+                  value:
+                    success: false
+                    message: "Dữ liệu đầu vào không hợp lệ"
+                    data: null
+                system_error:
+                  summary: Lỗi hệ thống
+                  value:
+                    success: false
+                    message: "Lỗi hệ thống: Email đã tồn tại"
+                    data: null
+
+  /TaiKhoan/{id}:
+    get:
+      tags:
+        - TaiKhoan
+      summary: Lấy thông tin tài khoản theo ID
+      description: Trả về thông tin chi tiết của một tài khoản theo ID
+      operationId: GetTaiKhoanById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của tài khoản
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          example: 1
+      responses:
+        '200':
+          description: Lấy thông tin tài khoản thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              example:
+                success: true
+                message: "Lấy thông tin tài khoản thành công"
+                data:
+                  maTaiKhoan: 1
+                  tenNguoiDung: "Nguyễn Văn A"
+                  email: "nguyenvana@email.com"
+                  soDienThoai: "0123456789"
+                  maQuyen: 1
+                  tenQuyen: "Admin"
+                  trangThai: "Active"
+                  ngayTao: "2024-01-01T00:00:00Z"
+                  ngayCapNhat: "2024-01-01T00:00:00Z"
+        '404':
+          description: Không tìm thấy tài khoản
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              example:
+                success: false
+                message: "Không tìm thấy tài khoản"
+                data: null
+        '400':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              example:
+                success: false
+                message: "Lỗi hệ thống: Invalid ID format"
+                data: null
+
+    put:
+      tags:
+        - TaiKhoan
+      summary: Cập nhật thông tin tài khoản
+      description: Cập nhật thông tin của một tài khoản theo ID
+      operationId: UpdateTaiKhoan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của tài khoản cần cập nhật
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaiKhoanDto'
+            example:
+              tenNguoiDung: "Nguyễn Văn A Updated"
+              email: "nguyenvana.updated@email.com"
+              soDienThoai: "0123456789"
+              maQuyen: 1
+              trangThai: "Active"
+      responses:
+        '200':
+          description: Cập nhật tài khoản thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              example:
+                success: true
+                message: "Cập nhật tài khoản thành công"
+                data:
+                  maTaiKhoan: 1
+                  tenNguoiDung: "Nguyễn Văn A Updated"
+                  email: "nguyenvana.updated@email.com"
+                  soDienThoai: "0123456789"
+                  maQuyen: 1
+                  tenQuyen: "Admin"
+                  trangThai: "Active"
+                  ngayTao: "2024-01-01T00:00:00Z"
+                  ngayCapNhat: "2024-01-15T14:30:00Z"
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ hoặc lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              examples:
+                validation_error:
+                  summary: Lỗi validation
+                  value:
+                    success: false
+                    message: "Dữ liệu đầu vào không hợp lệ"
+                    data: null
+                system_error:
+                  summary: Lỗi hệ thống
+                  value:
+                    success: false
+                    message: "Lỗi hệ thống: Email đã tồn tại"
+                    data: null
+        '404':
+          description: Không tìm thấy tài khoản
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTaiKhoanDto'
+              example:
+                success: false
+                message: "Không tìm thấy tài khoản"
+                data: null
+
+    delete:
+      tags:
+        - TaiKhoan
+      summary: Xóa tài khoản
+      description: Xóa một tài khoản theo ID
+      operationId: DeleteTaiKhoan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của tài khoản cần xóa
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          example: 1
+      responses:
+        '200':
+          description: Xóa tài khoản thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              example:
+                success: true
+                message: "Xóa tài khoản thành công"
+                data: null
+        '400':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              example:
+                success: false
+                message: "Lỗi hệ thống: Cannot delete account with active orders"
+                data: null
+        '404':
+          description: Không tìm thấy tài khoản
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              example:
+                success: false
+                message: "Không tìm thấy tài khoản"
+                data: null
+
+  /TaiKhoan/{id}/status:
+    patch:
+      tags:
+        - TaiKhoan
+      summary: Cập nhật trạng thái tài khoản
+      description: Cập nhật trạng thái của một tài khoản (Active/Inactive)
+      operationId: UpdateTaiKhoanStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của tài khoản cần cập nhật trạng thái
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              enum: [Active, Inactive, Suspended]
+              example: "Active"
+      responses:
+        '200':
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              example:
+                success: true
+                message: "Cập nhật trạng thái thành công"
+                data: null
+        '400':
+          description: Cập nhật trạng thái thất bại hoặc lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              examples:
+                update_failed:
+                  summary: Cập nhật thất bại
+                  value:
+                    success: false
+                    message: "Cập nhật trạng thái thất bại"
+                    data: null
+                system_error:
+                  summary: Lỗi hệ thống
+                  value:
+                    success: false
+                    message: "Lỗi hệ thống: Invalid status value"
+                    data: null
+
+  /TaiKhoan/{id}/reset-password:
+    patch:
+      tags:
+        - TaiKhoan
+      summary: Reset mật khẩu tài khoản
+      description: Reset mật khẩu của một tài khoản theo ID
+      operationId: ResetPassword
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của tài khoản cần reset mật khẩu
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordDto'
+            example:
+              newPassword: "newpassword123"
+              confirmNewPassword: "newpassword123"
+      responses:
+        '200':
+          description: Reset mật khẩu thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              example:
+                success: true
+                message: "Reset mật khẩu thành công"
+                data: null
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ hoặc reset thất bại
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+              examples:
+                validation_error:
+                  summary: Lỗi validation
+                  value:
+                    success: false
+                    message: "Dữ liệu đầu vào không hợp lệ"
+                    data: null
+                reset_failed:
+                  summary: Reset thất bại
+                  value:
+                    success: false
+                    message: "Reset mật khẩu thất bại"
+                    data: null
+                system_error:
+                  summary: Lỗi hệ thống
+                  value:
+                    success: false
+                    message: "Lỗi hệ thống: Password validation failed"
+                    data: null
+
+components:
+  schemas:
+    TaiKhoanDto:
+      type: object
+      properties:
+        maTaiKhoan:
+          type: integer
+          format: int32
+          description: ID duy nhất của tài khoản
+          example: 1
+        tenNguoiDung:
+          type: string
+          description: Tên người dùng
+          maxLength: 100
+          example: "Nguyễn Văn A"
+        email:
+          type: string
+          format: email
+          description: Địa chỉ email
+          example: "nguyenvana@email.com"
+        soDienThoai:
+          type: string
+          description: Số điện thoại
+          example: "0123456789"
+        maQuyen:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã quyền của tài khoản
+          example: 1
+        tenQuyen:
+          type: string
+          nullable: true
+          description: Tên quyền của tài khoản
+          example: "Admin"
+        trangThai:
+          type: string
+          description: Trạng thái tài khoản
+          enum: [Active, Inactive, Suspended]
+          example: "Active"
+        ngayTao:
+          type: string
+          format: date-time
+          nullable: true
+          description: Ngày tạo tài khoản
+          example: "2024-01-01T00:00:00Z"
+        ngayCapNhat:
+          type: string
+          format: date-time
+          nullable: true
+          description: Ngày cập nhật cuối cùng
+          example: "2024-01-15T14:30:00Z"
+
+    TaiKhoanListDto:
+      type: object
+      properties:
+        maTaiKhoan:
+          type: integer
+          format: int32
+          description: ID duy nhất của tài khoản
+          example: 1
+        tenNguoiDung:
+          type: string
+          description: Tên người dùng
+          maxLength: 100
+          example: "Nguyễn Văn A"
+        email:
+          type: string
+          format: email
+          description: Địa chỉ email
+          example: "nguyenvana@email.com"
+        soDienThoai:
+          type: string
+          description: Số điện thoại
+          example: "0123456789"
+        maQuyen:
+          type: integer
+          format: int32
+          nullable: true
+          description: Mã quyền của tài khoản
+          example: 1
+        tenQuyen:
+          type: string
+          nullable: true
+          description: Tên quyền của tài khoản
+          example: "Admin"
+        trangThai:
+          type: string
+          description: Trạng thái tài khoản
+          enum: [Active, Inactive, Suspended]
+          example: "Active"
+        ngayTao:
+          type: string
+          format: date-time
+          nullable: true
+          description: Ngày tạo tài khoản
+          example: "2024-01-01T00:00:00Z"
+
+    CreateTaiKhoanDto:
+      type: object
+      required:
+        - tenNguoiDung
+        - email
+        - soDienThoai
+        - password
+        - maQuyen
+      properties:
+        tenNguoiDung:
+          type: string
+          description: Tên người dùng
+          maxLength: 100
+          minLength: 1
+          example: "Nguyễn Văn B"
+        email:
+          type: string
+          format: email
+          description: Địa chỉ email
+          example: "nguyenvanb@email.com"
+        soDienThoai:
+          type: string
+          description: Số điện thoại
+          example: "0987654321"
+        password:
+          type: string
+          description: Mật khẩu
+          minLength: 6
+          example: "password123"
+        maQuyen:
+          type: integer
+          format: int32
+          description: Mã quyền của tài khoản
+          default: 3
+          example: 2
+        trangThai:
+          type: string
+          description: Trạng thái tài khoản
+          enum: [Active, Inactive, Suspended]
+          default: "Active"
+          example: "Active"
+
+    UpdateTaiKhoanDto:
+      type: object
+      required:
+        - tenNguoiDung
+        - email
+        - soDienThoai
+        - maQuyen
+        - trangThai
+      properties:
+        tenNguoiDung:
+          type: string
+          description: Tên người dùng
+          maxLength: 100
+          minLength: 1
+          example: "Nguyễn Văn A Updated"
+        email:
+          type: string
+          format: email
+          description: Địa chỉ email
+          example: "nguyenvana.updated@email.com"
+        soDienThoai:
+          type: string
+          description: Số điện thoại
+          example: "0123456789"
+        maQuyen:
+          type: integer
+          format: int32
+          description: Mã quyền của tài khoản
+          example: 1
+        trangThai:
+          type: string
+          description: Trạng thái tài khoản
+          enum: [Active, Inactive, Suspended]
+          example: "Active"
+
+    ResetPasswordDto:
+      type: object
+      required:
+        - newPassword
+        - confirmNewPassword
+      properties:
+        newPassword:
+          type: string
+          description: Mật khẩu mới
+          minLength: 6
+          example: "newpassword123"
+        confirmNewPassword:
+          type: string
+          description: Xác nhận mật khẩu mới
+          minLength: 6
+          example: "newpassword123"
+
+    ApiResponseTaiKhoanDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công của request
+          example: true
+        message:
+          type: string
+          description: Thông báo kết quả
+          example: "Lấy thông tin tài khoản thành công"
+        data:
+          $ref: '#/components/schemas/TaiKhoanDto'
+
+    ApiResponseTaiKhoanListDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công của request
+          example: true
+        message:
+          type: string
+          description: Thông báo kết quả
+          example: "Lấy danh sách tài khoản thành công"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaiKhoanListDto'
+
+    ApiResponseObject:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Trạng thái thành công của request
+          example: true
+        message:
+          type: string
+          description: Thông báo kết quả
+          example: "Thao tác thành công"
+        data:
+          type: object
+          nullable: true
+          description: Dữ liệu trả về (có thể null)
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token để xác thực người dùng
+
+security:
+  - BearerAuth: []
